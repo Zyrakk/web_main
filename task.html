@@ -1,0 +1,1464 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta
+      name="viewport"
+      content="width=device-width, initial-scale=1, viewport-fit=cover"
+    />
+    <title>To‑Do Pulse — Pixel Edition</title>
+
+    <link
+      href="https://fonts.googleapis.com/css2?family=Press+Start+2P&family=VT323&display=swap"
+      rel="stylesheet"
+    />
+
+    <style>
+      :root {
+        --bg: #05090a;
+        --grid: #0a1416;
+        --scan: rgba(255, 255, 255, 0.04);
+        --ui: #00f6a9;
+        --ui-2: #00a7ff;
+        --ui-3: #a855f7;
+        --warn: #ffd54d;
+        --ok: #34d399;
+        --danger: #ff5178;
+        --text: #cfffe9;
+        --muted: #86e8c9;
+        --px: 8px; /* pixel corner */
+        --pad: clamp(14px, 4vw, 24px);
+        --gap: clamp(10px, 3.2vw, 16px);
+      }
+
+      *,
+      *::before,
+      *::after {
+        box-sizing: border-box;
+      }
+
+      html,
+      body {
+        height: 100%;
+        background: var(--bg);
+      }
+
+      body {
+        margin: 0;
+        color: var(--text);
+        font-family: "VT323", monospace;
+        letter-spacing: 0.3px;
+        image-rendering: pixelated;
+        overflow-x: hidden;
+        cursor: crosshair;
+      }
+
+      /* 3D floor grid */
+      .grid3d {
+        position: fixed;
+        inset: 0;
+        z-index: 0;
+        background: radial-gradient(1200px 700px at 50% -10%, #072c2a 0%, transparent 60%),
+          radial-gradient(1200px 900px at 120% 120%, #140a24 0%, transparent 50%);
+      }
+      .grid3d::before,
+      .grid3d::after {
+        content: "";
+        position: absolute;
+        left: 50%;
+        bottom: -10%;
+        width: 220vw;
+        height: 180vh;
+        transform: translateX(-50%) perspective(820px) rotateX(64deg);
+        background-image: repeating-linear-gradient(
+            to right,
+            var(--grid) 0 2px,
+            transparent 2px 60px
+          ),
+          repeating-linear-gradient(
+            to bottom,
+            var(--grid) 0 2px,
+            transparent 2px 60px
+          );
+        filter: drop-shadow(0 0 14px rgba(0, 255, 170, 0.08));
+      }
+      .grid3d::after {
+        opacity: 0.35;
+        transform: translateX(-50%) perspective(880px) rotateX(66deg) translateY(22px);
+      }
+
+      /* CRT scanlines */
+      .scanlines {
+        position: fixed;
+        inset: 0;
+        pointer-events: none;
+        background: repeating-linear-gradient(
+          to bottom,
+          transparent 0 2px,
+          var(--scan) 2px 3px
+        );
+        mix-blend-mode: soft-light;
+        z-index: 40;
+        animation: crt 6s ease-in-out infinite;
+      }
+      @keyframes crt {
+        0%,
+        100% {
+          opacity: 0.6;
+          filter: hue-rotate(0deg);
+        }
+        50% {
+          opacity: 0.75;
+          filter: hue-rotate(-6deg) saturate(1.05);
+        }
+      }
+
+      /* Container */
+      .container {
+        position: relative;
+        z-index: 10;
+        max-width: 1280px;
+        margin: 0 auto;
+        padding: var(--pad);
+        padding-left: calc(var(--pad) + env(safe-area-inset-left));
+        padding-right: calc(var(--pad) + env(safe-area-inset-right));
+      }
+
+      /* Sticky header */
+      header {
+        position: sticky;
+        top: 0;
+        z-index: 30;
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        gap: 12px;
+        margin: 0 0 calc(var(--gap) + 4px) 0;
+        padding: 10px 0;
+        background: linear-gradient(180deg, rgba(5, 12, 11, 0.9), rgba(5, 9, 10, 0.6));
+        backdrop-filter: blur(2px);
+        border-bottom: 2px solid rgba(0, 255, 170, 0.2);
+      }
+
+      .brand {
+        display: flex;
+        align-items: center;
+        gap: 12px;
+        filter: drop-shadow(0 0 12px rgba(0, 255, 170, 0.25));
+      }
+      .logo {
+        width: clamp(34px, 9vw, 44px);
+        height: clamp(34px, 9vw, 44px);
+        display: grid;
+        place-items: center;
+        background: conic-gradient(
+          from 150deg,
+          var(--ui),
+          var(--ui-2),
+          var(--ui-3),
+          var(--warn),
+          var(--ui)
+        );
+        clip-path: polygon(
+          0 var(--px),
+          var(--px) var(--px),
+          var(--px) 0,
+          calc(100% - var(--px)) 0,
+          calc(100% - var(--px)) var(--px),
+          100% var(--px),
+          100% calc(100% - var(--px)),
+          calc(100% - var(--px)) calc(100% - var(--px)),
+          calc(100% - var(--px)) 100%,
+          var(--px) 100%,
+          var(--px) calc(100% - var(--px)),
+          0 calc(100% - var(--px))
+        );
+        box-shadow: 0 0 20px rgba(0, 255, 170, 0.35);
+        animation: spin 10s linear infinite;
+      }
+      .logo::after {
+        content: "★";
+        font-size: clamp(14px, 3.2vw, 18px);
+        color: #04150e;
+      }
+      @keyframes spin {
+        to {
+          transform: rotate(360deg);
+        }
+      }
+      h1 {
+        margin: 0;
+        font-family: "Press Start 2P", system-ui, monospace;
+        font-size: clamp(14px, 3.8vw, 28px);
+        letter-spacing: 1.2px;
+        background: linear-gradient(90deg, #d1ffe9, #9cf7ff, #e1c6ff);
+        -webkit-background-clip: text;
+        background-clip: text;
+        color: transparent;
+      }
+
+      .header-actions {
+        display: flex;
+        align-items: center;
+        gap: 8px;
+        flex-wrap: nowrap;
+      }
+
+      .btn {
+        appearance: none;
+        border: 0;
+        color: #04150e;
+        font-weight: 700;
+        border-radius: 0;
+        padding: 10px 12px;
+        font-family: "Press Start 2P", monospace;
+        font-size: clamp(9px, 2.4vw, 11px);
+        background: linear-gradient(90deg, var(--ui), var(--ui-2), var(--ui-3));
+        background-size: 200% 100%;
+        animation: sheen 9s ease-in-out infinite;
+        cursor: pointer;
+        box-shadow: 0 0 0 2px rgba(0, 255, 170, 0.45),
+          0 8px 24px rgba(0, 171, 255, 0.24);
+        clip-path: polygon(
+          0 var(--px),
+          var(--px) var(--px),
+          var(--px) 0,
+          calc(100% - var(--px)) 0,
+          calc(100% - var(--px)) var(--px),
+          100% var(--px),
+          100% calc(100% - var(--px)),
+          calc(100% - var(--px)) calc(100% - var(--px)),
+          calc(100% - var(--px)) 100%,
+          var(--px) 100%,
+          var(--px) calc(100% - var(--px)),
+          0 calc(100% - var(--px))
+        );
+        transition: transform 0.15s ease, filter 0.15s ease;
+        white-space: nowrap;
+      }
+      .btn:hover {
+        transform: translateY(-2px);
+        filter: saturate(1.2) contrast(1.05);
+      }
+      .btn.secondary {
+        color: var(--text);
+        background: #0a1c19;
+      }
+      @keyframes sheen {
+        0%,
+        100% {
+          background-position: 0% 50%;
+        }
+        50% {
+          background-position: 100% 50%;
+        }
+      }
+
+      /* Content grid */
+      .grid {
+        display: grid;
+        grid-template-columns: repeat(12, 1fr);
+        gap: var(--gap);
+      }
+      @media (max-width: 1024px) {
+        .grid {
+          grid-template-columns: repeat(6, 1fr);
+        }
+      }
+      @media (max-width: 680px) {
+        .grid {
+          grid-template-columns: repeat(1, 1fr);
+        }
+      }
+
+      /* Pixel card */
+      .card {
+        grid-column: span 4;
+        position: relative;
+        background: #071412;
+        border: 2px solid rgba(0, 255, 170, 0.25);
+        clip-path: polygon(
+          0 var(--px),
+          var(--px) var(--px),
+          var(--px) 0,
+          calc(100% - var(--px)) 0,
+          calc(100% - var(--px)) var(--px),
+          100% var(--px),
+          100% calc(100% - var(--px)),
+          calc(100% - var(--px)) calc(100% - var(--px)),
+          calc(100% - var(--px)) 100%,
+          var(--px) 100%,
+          var(--px) calc(100% - var(--px)),
+          0 calc(100% - var(--px))
+        );
+        box-shadow: 0 0 0 2px rgba(0, 255, 170, 0.08) inset,
+          0 12px 40px rgba(0, 0, 0, 0.55);
+        transition: transform 0.18s ease, box-shadow 0.18s ease;
+        padding: 0; /* for accent line */
+      }
+      .card:hover {
+        transform: translateY(-4px);
+        box-shadow: 0 0 0 2px rgba(0, 255, 170, 0.14) inset,
+          0 18px 60px rgba(0, 0, 0, 0.7);
+      }
+      .card::before {
+        /* subtle color accent per task */
+        content: "";
+        position: absolute;
+        left: -2px;
+        right: -2px;
+        top: -2px;
+        height: 4px;
+        background: linear-gradient(90deg, var(--c1, var(--ui)), var(--c2, var(--ui-2)));
+        opacity: 0.9;
+      }
+      .card .inner {
+        padding: 14px 14px 16px 14px;
+        display: flex;
+        flex-direction: column;
+        gap: 10px;
+      }
+      @media (max-width: 680px) {
+        .card {
+          grid-column: span 1;
+        }
+        :root {
+          --px: 6px;
+        }
+        .card .inner {
+          padding: 12px;
+          gap: 8px;
+        }
+      }
+
+      .top {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        gap: 10px;
+      }
+      .title {
+        font-family: "Press Start 2P", monospace;
+        font-size: clamp(12px, 3.8vw, 14px);
+        line-height: 1.3;
+        color: #d1ffe9;
+        text-shadow: 0 0 10px rgba(0, 255, 170, 0.22);
+      }
+      .desc {
+        color: var(--muted);
+        font-size: clamp(16px, 4.8vw, 18px);
+        line-height: 1.2;
+      }
+
+      .meta {
+        display: flex;
+        align-items: center;
+        gap: 8px;
+        flex-wrap: wrap;
+      }
+      .chip {
+        font-family: "Press Start 2P", monospace;
+        font-size: clamp(9px, 2.6vw, 10px);
+        color: #04150e;
+        padding: 8px 10px;
+        background: linear-gradient(90deg, var(--ui), var(--ui-2));
+        clip-path: polygon(
+          0 var(--px),
+          var(--px) var(--px),
+          var(--px) 0,
+          calc(100% - var(--px)) 0,
+          calc(100% - var(--px)) var(--px),
+          100% var(--px),
+          100% calc(100% - var(--px)),
+          calc(100% - var(--px)) calc(100% - var(--px)),
+          calc(100% - var(--px)) 100%,
+          var(--px) 100%,
+          var(--px) calc(100% - var(--px)),
+          0 calc(100% - var(--px))
+        );
+      }
+      .chip.manual {
+        background: linear-gradient(90deg, var(--warn), var(--ui-3));
+      }
+      .chip.done {
+        background: linear-gradient(90deg, #a7f3d0, #34d399);
+      }
+
+      .drag-handle {
+        display: none;
+        align-items: center;
+        gap: 6px;
+        color: var(--muted);
+        font-size: clamp(11px, 3.6vw, 12px);
+        padding: 6px 8px;
+        border: 2px dashed rgba(0, 255, 170, 0.35);
+        background: #06100e;
+        cursor: grab;
+        user-select: none;
+      }
+      .admin-on .drag-handle {
+        display: inline-flex;
+      }
+      .dragging {
+        opacity: 0.75;
+        transform: translateY(-2px) scale(0.997);
+      }
+      .card.drop-before::after,
+      .card.drop-after::after {
+        content: "";
+        position: absolute;
+        left: 0;
+        right: 0;
+        height: 4px;
+        background: linear-gradient(90deg, var(--ui), var(--ui-2), var(--ui-3));
+        box-shadow: 0 8px 26px rgba(0, 171, 255, 0.35);
+      }
+      .card.drop-before::after {
+        top: -2px;
+      }
+      .card.drop-after::after {
+        bottom: -2px;
+      }
+
+      /* 8‑bit progress */
+      .progress {
+        position: relative;
+        height: 16px;
+        border: 2px solid rgba(0, 255, 170, 0.35);
+        background: #06100e;
+        overflow: hidden;
+        clip-path: polygon(
+          0 var(--px),
+          var(--px) var(--px),
+          var(--px) 0,
+          calc(100% - var(--px)) 0,
+          calc(100% - var(--px)) var(--px),
+          100% var(--px),
+          100% calc(100% - var(--px)),
+          calc(100% - var(--px)) calc(100% - var(--px)),
+          calc(100% - var(--px)) 100%,
+          var(--px) 100%,
+          var(--px) calc(100% - var(--px)),
+          0 calc(100% - var(--px))
+        );
+      }
+      .progress-fill {
+        position: absolute;
+        inset: 0;
+        width: var(--w, 0%);
+        background: repeating-linear-gradient(
+            135deg,
+            rgba(255, 255, 255, 0.14) 0 6px,
+            rgba(255, 255, 255, 0) 6px 14px
+          ),
+          linear-gradient(90deg, var(--c1, var(--ui)), var(--c2, var(--ui-2)));
+        image-rendering: pixelated;
+        animation: pixflow 1.1s steps(8) infinite;
+        box-shadow: 0 0 16px rgba(0, 255, 170, 0.35);
+        transition: width 0.6s cubic-bezier(0.22, 1, 0.36, 1);
+      }
+      @keyframes pixflow {
+        from {
+          background-position: 0 0, 0 0;
+        }
+        to {
+          background-position: 60px 0, 0 0;
+        }
+      }
+      .progress-labels {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        font-family: "Press Start 2P", monospace;
+        font-size: clamp(9px, 2.6vw, 10px);
+        color: var(--muted);
+        margin-top: 6px;
+      }
+
+      .card-actions {
+        display: flex;
+        align-items: center;
+        justify-content: flex-end;
+        gap: 8px;
+      }
+      .icon-btn {
+        border: 2px solid rgba(0, 255, 170, 0.35);
+        background: #06100e;
+        color: var(--text);
+        padding: 8px 10px;
+        font-family: "Press Start 2P", monospace;
+        font-size: clamp(9px, 2.6vw, 10px);
+        cursor: pointer;
+        clip-path: polygon(
+          0 var(--px),
+          var(--px) var(--px),
+          var(--px) 0,
+          calc(100% - var(--px)) 0,
+          calc(100% - var(--px)) var(--px),
+          100% var(--px),
+          100% calc(100% - var(--px)),
+          calc(100% - var(--px)) calc(100% - var(--px)),
+          calc(100% - var(--px)) 100%,
+          var(--px) 100%,
+          var(--px) calc(100% - var(--px)),
+          0 calc(100% - var(--px))
+        );
+        transition: transform 0.15s ease;
+      }
+      .icon-btn:hover {
+        transform: translateY(-2px);
+      }
+      .icon {
+        width: 14px;
+        height: 14px;
+      }
+
+      .fab {
+        position: fixed;
+        right: calc(16px + env(safe-area-inset-right));
+        bottom: calc(16px + env(safe-area-inset-bottom));
+        z-index: 50;
+      }
+      .fab button {
+        border: 0;
+        color: #04150e;
+        font-family: "Press Start 2P", monospace;
+        font-size: clamp(10px, 3vw, 11px);
+        padding: 14px 16px;
+        background: linear-gradient(90deg, var(--ui), var(--ui-2), var(--ui-3));
+        cursor: pointer;
+        box-shadow: 0 0 0 2px rgba(0, 255, 170, 0.45),
+          0 10px 30px rgba(0, 171, 255, 0.24),
+          0 0 100px rgba(0, 255, 170, 0.25);
+        clip-path: polygon(
+          0 var(--px),
+          var(--px) var(--px),
+          var(--px) 0,
+          calc(100% - var(--px)) 0,
+          calc(100% - var(--px)) var(--px),
+          100% var(--px),
+          100% calc(100% - var(--px)),
+          calc(100% - var(--px)) calc(100% - var(--px)),
+          calc(100% - var(--px)) 100%,
+          var(--px) 100%,
+          var(--px) calc(100% - var(--px)),
+          0 calc(100% - var(--px))
+        );
+      }
+      .fab .hint {
+        color: var(--muted);
+        font-size: 14px;
+        margin-top: 6px;
+        text-align: right;
+      }
+
+      /* Modal */
+      .modal {
+        position: fixed;
+        inset: 0;
+        background: rgba(3, 8, 10, 0.7);
+        display: none;
+        align-items: center;
+        justify-content: center;
+        padding: 20px;
+        z-index: 100;
+      }
+      .modal.show {
+        display: flex;
+      }
+      .modal-card {
+        width: 100%;
+        max-width: min(640px, 92vw);
+        background: #06100e;
+        border: 2px solid rgba(0, 255, 170, 0.45);
+        clip-path: polygon(
+          0 var(--px),
+          var(--px) var(--px),
+          var(--px) 0,
+          calc(100% - var(--px)) 0,
+          calc(100% - var(--px)) var(--px),
+          100% var(--px),
+          100% calc(100% - var(--px)),
+          calc(100% - var(--px)) calc(100% - var(--px)),
+          calc(100% - var(--px)) 100%,
+          var(--px) 100%,
+          var(--px) calc(100% - var(--px)),
+          0 calc(100% - var(--px))
+        );
+        box-shadow: 0 0 0 3px rgba(0, 255, 170, 0.12) inset,
+          0 20px 60px rgba(0, 0, 0, 0.6);
+        padding: 16px;
+      }
+      .modal-card h3 {
+        margin: 0 0 12px 0;
+        font-family: "Press Start 2P", monospace;
+        font-size: clamp(14px, 4.6vw, 16px);
+        color: #d1ffe9;
+      }
+      .form {
+        display: grid;
+        gap: 12px;
+      }
+      .row {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 12px;
+      }
+      @media (max-width: 560px) {
+        .row {
+          grid-template-columns: 1fr;
+        }
+      }
+      label {
+        font-family: "Press Start 2P", monospace;
+        font-size: clamp(9px, 2.6vw, 10px);
+        color: var(--muted);
+        display: block;
+        margin-bottom: 6px;
+      }
+      input[type="text"],
+      input[type="datetime-local"],
+      input[type="number"],
+      textarea,
+      select {
+        width: 100%;
+        padding: 12px 12px;
+        outline: none;
+        color: var(--text);
+        background: #071412;
+        border: 2px solid rgba(0, 255, 170, 0.35);
+        font-family: "VT323", monospace;
+        font-size: clamp(18px, 5.5vw, 20px);
+      }
+      textarea {
+        min-height: 90px;
+        resize: vertical;
+      }
+      .range-wrap {
+        display: flex;
+        align-items: center;
+        gap: 10px;
+      }
+      input[type="range"] {
+        -webkit-appearance: none;
+        appearance: none;
+        width: 100%;
+        height: 14px;
+        background: #000;
+        border: 2px solid rgba(0, 255, 170, 0.35);
+      }
+      input[type="range"]::-webkit-slider-thumb {
+        -webkit-appearance: none;
+        appearance: none;
+        width: 18px;
+        height: 18px;
+        background: var(--ui);
+        border: 2px solid #06261e;
+        cursor: grab;
+      }
+
+      .countdown {
+        font-family: "Press Start 2P", monospace;
+        font-size: clamp(9px, 2.6vw, 10px);
+        color: var(--muted);
+      }
+
+      .admin-only {
+        display: none;
+      }
+      .admin-on .admin-only {
+        display: inline-flex;
+      }
+
+      .toast {
+        position: fixed;
+        left: 50%;
+        bottom: calc(18px + env(safe-area-inset-bottom));
+        transform: translateX(-50%);
+        background: #06100e;
+        border: 2px solid rgba(0, 255, 170, 0.45);
+        padding: 12px 16px;
+        font-family: "Press Start 2P", monospace;
+        font-size: clamp(10px, 3vw, 11px);
+        display: none;
+        z-index: 120;
+      }
+      .toast.show {
+        display: block;
+      }
+
+      #confettiCanvas {
+        position: fixed;
+        inset: 0;
+        width: 100vw;
+        height: 100vh;
+        pointer-events: none;
+        z-index: 200;
+        image-rendering: pixelated;
+      }
+
+      a.btn {
+        text-decoration: none;
+        display: inline-flex;
+      }
+    </style>
+  </head>
+
+  <body>
+    <div class="grid3d" aria-hidden="true"></div>
+    <div class="scanlines" aria-hidden="true"></div>
+
+    <canvas id="confettiCanvas"></canvas>
+
+    <div class="container" id="app">
+      <header>
+        <div class="brand">
+          <div class="logo" aria-hidden="true"></div>
+          <h1>To‑Do Pulse — PIXEL</h1>
+        </div>
+
+        <div class="header-actions">
+          <a class="btn secondary" id="adminLink" href="/admin/task.html">
+            Admin
+          </a>
+          <a class="btn secondary admin-only" id="viewerLink" href="/task.html">
+            Viewer
+          </a>
+        </div>
+      </header>
+
+      <div class="grid" id="taskGrid"></div>
+
+      <div class="fab admin-only">
+        <button id="addTaskBtn">+ New task</button>
+        <div class="hint">Drag to reorder</div>
+      </div>
+    </div>
+
+    <!-- Editor Modal -->
+    <div class="modal" id="editModal" aria-hidden="true">
+      <div class="modal-card" role="dialog" aria-modal="true">
+        <h3 id="editorTitle">Create / Edit task</h3>
+        <div class="form">
+          <div class="row">
+            <div>
+              <label>Title</label>
+              <input type="text" id="taskTitle" placeholder="e.g., Landing" />
+            </div>
+            <div>
+              <label>Progress mode</label>
+              <select id="taskMode">
+                <option value="manual">Manual</option>
+                <option value="time">Time (auto)</option>
+              </select>
+            </div>
+          </div>
+
+          <div>
+            <label>Description</label>
+            <textarea
+              id="taskDesc"
+              placeholder="Notes, details…"
+            ></textarea>
+          </div>
+
+          <div id="manualGroup">
+            <label>Manual progress</label>
+            <div class="range-wrap">
+              <input
+                type="range"
+                id="taskPercent"
+                min="0"
+                max="100"
+                step="1"
+                value="0"
+              />
+              <span id="manualValue" style="width: 44px; text-align: right"
+                >0%</span
+              >
+            </div>
+          </div>
+
+          <div id="timeGroup" style="display: none">
+            <div class="row">
+              <div>
+                <label>Start</label>
+                <input type="datetime-local" id="taskStart" />
+              </div>
+              <div>
+                <label>End</label>
+                <input type="datetime-local" id="taskEnd" />
+              </div>
+            </div>
+            <div style="color: var(--muted); font-size: 14px">
+              Progress fills automatically from Start to End.
+            </div>
+          </div>
+
+          <div class="row">
+            <div>
+              <label>Color 1</label>
+              <input type="text" id="taskColor1" value="#00f6a9" />
+            </div>
+            <div>
+              <label>Color 2</label>
+              <input type="text" id="taskColor2" value="#00a7ff" />
+            </div>
+          </div>
+
+          <div class="modal-actions" style="display: flex; gap: 10px">
+            <button class="btn secondary" id="deleteTaskBtn">Delete</button>
+            <span style="flex: 1"></span>
+            <button class="btn secondary" id="cancelEdit">Cancel</button>
+            <button class="btn" id="saveTask">Save</button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="toast" id="toast"></div>
+
+    <script>
+    // To‑Do Pulse — Pixel Edition (Realtime via WebSocket + API)
+    // - Reads: GET /api/tasks (public)
+    // - Writes: POST /api/save (Basic Auth required by NGINX)
+    // - Realtime: wss://host/ws broadcasts updates
+
+    const ADMIN_MODE = location.pathname.startsWith("/admin");
+    const isAdmin = () => ADMIN_MODE;
+
+    let tasks = [];
+    let editingId = null;
+    let draggingId = null;
+    let serverVersion = 0;
+    let ws = null;
+    let reconnectDelay = 1000;
+
+    // Confetti on entry + detection of new completions
+    let initialConfettiShown = false;
+    let completedIds = new Set();
+
+    const computeCompletedIds = (list) =>
+    new Set(
+        (list || [])
+        .filter((t) => computePct(t) >= 100)
+        .map((t) => t.id)
+        .filter(Boolean)
+    );
+
+    const hasNewCompletion = (prevSet, nextSet) => {
+    for (const id of nextSet) {
+        if (!prevSet.has(id)) return true;
+    }
+    return false;
+    };
+
+    const confettiOnEntryIfCompleted = () => {
+    if (initialConfettiShown) return;
+    if (tasks.some((t) => computePct(t) >= 100)) {
+        initialConfettiShown = true;
+        Confetti.celebrate(); // solo confeti (sin toast)
+    }
+    };
+
+    const els = {
+        grid: document.getElementById("taskGrid"),
+        editModal: document.getElementById("editModal"),
+        editorTitle: document.getElementById("editorTitle"),
+        title: document.getElementById("taskTitle"),
+        desc: document.getElementById("taskDesc"),
+        mode: document.getElementById("taskMode"),
+        manualGroup: document.getElementById("manualGroup"),
+        timeGroup: document.getElementById("timeGroup"),
+        percent: document.getElementById("taskPercent"),
+        manualValue: document.getElementById("manualValue"),
+        start: document.getElementById("taskStart"),
+        end: document.getElementById("taskEnd"),
+        c1: document.getElementById("taskColor1"),
+        c2: document.getElementById("taskColor2"),
+        saveTask: document.getElementById("saveTask"),
+        cancelEdit: document.getElementById("cancelEdit"),
+        deleteTask: document.getElementById("deleteTaskBtn"),
+        addTaskBtn: document.getElementById("addTaskBtn"),
+        toast: document.getElementById("toast"),
+        confetti: document.getElementById("confettiCanvas")
+    };
+
+    const fmtPct = (n) => `${Math.round(n)}%`;
+    const clamp = (n, a, b) => Math.max(a, Math.min(b, n));
+    const now = () => new Date().getTime();
+    const uid = () =>
+        Math.random().toString(36).slice(2) + Date.now().toString(36);
+
+    const showToast = (msg) => {
+        els.toast.textContent = msg;
+        els.toast.classList.add("show");
+        setTimeout(() => els.toast.classList.remove("show"), 1800);
+    };
+
+    // API
+    const API = {
+        async fetch() {
+        const r = await fetch("/api/tasks", { cache: "no-store" });
+        if (!r.ok) throw new Error("fetch failed");
+        const data = await r.json();
+        return data;
+        },
+        async save(allTasks) {
+        const r = await fetch("/api/save", {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify({ tasks: allTasks })
+        });
+        if (!r.ok) throw new Error("save failed");
+        return r.json();
+        }
+    };
+
+    // Realtime WS
+    function connectWS() {
+        try {
+            const proto = location.protocol === "https:" ? "wss" : "ws";
+            ws = new WebSocket(`${proto}://${location.host}/ws`);
+
+            ws.onopen = () => {
+            reconnectDelay = 1000;
+            };
+
+            ws.onmessage = (ev) => {
+            try {
+                const msg = JSON.parse(ev.data);
+                if (!msg) return;
+
+                // Guarda el estado de completadas antes de aplicar el nuevo estado
+                const prevCompleted = new Set(completedIds);
+
+                if (msg.type === "init" || msg.type === "set") {
+                if (msg.type === "set" && msg.version && msg.version <= serverVersion) {
+                    return; // evita versiones antiguas
+                }
+
+                serverVersion =
+                    msg.type === "set"
+                    ? msg.version || serverVersion + 1
+                    : msg.version || serverVersion;
+
+                tasks = Array.isArray(msg.tasks) ? msg.tasks : [];
+                render();
+
+                const nextCompleted = computeCompletedIds(tasks);
+
+                if (msg.type === "init") {
+                    // Confeti al entrar si ya hay completadas
+                    completedIds = nextCompleted;
+                    confettiOnEntryIfCompleted();
+                } else if (msg.type === "set") {
+                    // Confeti si aparecen nuevas completadas en tiempo real
+                    if (hasNewCompletion(prevCompleted, nextCompleted)) {
+                    Confetti.celebrate();
+                    }
+                    completedIds = nextCompleted;
+                }
+                }
+            } catch {
+                /* noop */
+            }
+            };
+
+            ws.onclose = () => {
+            setTimeout(connectWS, reconnectDelay);
+            reconnectDelay = Math.min(reconnectDelay * 2, 15000);
+            };
+            ws.onerror = () => {
+            try {
+                ws.close();
+            } catch {}
+            };
+        } catch {
+            setTimeout(connectWS, reconnectDelay);
+        }
+    }
+
+    // Compute progress/time
+    const computePct = (t) => {
+        if (t.mode !== "time") return clamp(t.percent ?? 0, 0, 100);
+        if (!t.start || !t.end) return 0;
+        const s = new Date(t.start).getTime();
+        const e = new Date(t.end).getTime();
+        const n = now();
+        if (e <= s) return 100;
+        const p = ((n - s) / (e - s)) * 100;
+        return clamp(p, 0, 100);
+    };
+    const fmtCountdown = (t) => {
+        const s = t.start ? new Date(t.start).getTime() : null;
+        const e = t.end ? new Date(t.end).getTime() : null;
+        const n = now();
+        if (t.mode !== "time" || !s || !e) return "";
+        if (n < s) return "Starts in " + humanize(s - n);
+        if (n >= e) return "Finished";
+        return "Ends in " + humanize(e - n);
+    };
+    const humanize = (ms) => {
+        const sec = Math.floor(ms / 1000);
+        const d = Math.floor(sec / 86400);
+        const h = Math.floor((sec % 86400) / 3600);
+        const m = Math.floor((sec % 3600) / 60);
+        const s = sec % 60;
+        const parts = [];
+        if (d) parts.push(d + "d");
+        if (h) parts.push(h + "h");
+        if (m) parts.push(m + "m");
+        parts.push(s + "s");
+        return parts.join(" ");
+    };
+    const escapeHtml = (s) =>
+        (s || "")
+        .replaceAll("&", "&amp;")
+        .replaceAll("<", "&lt;")
+        .replaceAll(">", "&gt;")
+        .replaceAll('"', "&quot;")
+        .replaceAll("'", "&#039;");
+
+    function icon(name) {
+        if (name === "edit")
+        return `<svg class="icon" viewBox="0 0 24 24" fill="none"
+            stroke="currentColor"><path stroke-linecap="round"
+            stroke-linejoin="round" stroke-width="1.5"
+            d="M16.862 4.487l1.687-1.688a2.25 2.25 0 113.182 3.183L7.5
+            20.313 3 21l.688-4.5L16.862 4.487z"/></svg>`;
+        if (name === "trash")
+        return `<svg class="icon" viewBox="0 0 24 24" fill="none"
+            stroke="currentColor"><path stroke-linecap="round"
+            stroke-linejoin="round" stroke-width="1.5"
+            d="M19.5 7.5l-.867 12.142A2.25 2.25 0 0116.39 22H7.61a2.25
+            2.25 0 01-2.243-2.358L4.5 7.5m3 0V5.25A2.25 2.25 0 019.75 3h4.5A2.25
+            2.25 0 0116.5 5.25V7.5m-9 0h11.25M9.75 11.25v6m4.5-6v6"/></svg>`;
+        if (name === "grip")
+        return `<svg class="icon" viewBox="0 0 24 24" fill="currentColor">
+            <rect x="6" y="5" width="3" height="3"/><rect x="6" y="10" width="3" height="3"/>
+            <rect x="6" y="15" width="3" height="3"/><rect x="15" y="5" width="3" height="3"/>
+            <rect x="15" y="10" width="3" height="3"/><rect x="15" y="15" width="3" height="3"/>
+        </svg>`;
+        return "";
+    }
+
+    function maybeCelebrate(t, pct) {
+        if (!t) return;
+        if (!t.celebrated && pct >= 100) {
+        t.celebrated = true;
+        Confetti.celebrate();
+        showToast("Task completed!");
+        }
+    }
+
+    function render() {
+        const admin = isAdmin();
+        document.body.classList.toggle("admin-on", admin);
+
+        if (!tasks.length) {
+        els.grid.innerHTML = `
+            <div class="card" style="grid-column: span 12">
+            <div class="inner">
+                <div class="top"><div class="title">No tasks yet</div></div>
+                <div class="desc">Open /admin/task.html to create the first one.</div>
+            </div>
+            </div>`;
+        return;
+        }
+
+        const html = tasks
+        .map((t) => {
+            const pct = computePct(t);
+            const done = pct >= 100;
+            const countdown = fmtCountdown(t);
+            const modeChip = admin
+            ? t.mode === "time"
+                ? `<span class="chip admin-only">Time</span>`
+                : `<span class="chip manual admin-only">Manual</span>`
+            : "";
+            const cdHtml = countdown
+            ? `<div class="countdown">${countdown}</div>`
+            : "";
+
+            return `
+            <div class="card" data-id="${t.id}"
+                style="--c1:${t.c1};--c2:${t.c2};"
+                ${admin ? 'draggable="true"' : ""}>
+                <div class="inner">
+                <div class="top">
+                    <div class="title">${escapeHtml(t.title)}</div>
+                    <div class="meta">
+                    ${
+                        admin
+                        ? `<span class="drag-handle">${icon("grip")}&nbsp;Move</span>`
+                        : ""
+                    }
+                    ${modeChip}
+                    ${done ? `<span class="chip done">Completed!</span>` : ""}
+                    </div>
+                </div>
+
+                <div class="desc">${escapeHtml(t.desc || "")}</div>
+
+                <div class="progress" title="${Math.round(pct)}%">
+                    <div class="progress-fill"
+                        style="--w:${pct}%;--c1:${t.c1};--c2:${t.c2}"></div>
+                </div>
+                <div class="progress-labels">
+                    <span>Progress</span>
+                    <span>${fmtPct(pct)}</span>
+                </div>
+
+                ${cdHtml}
+
+                <div class="card-actions admin-only">
+                    <button class="icon-btn" data-action="edit">
+                    ${icon("edit")}&nbsp;Edit
+                    </button>
+                    <button class="icon-btn" data-action="delete">
+                    ${icon("trash")}&nbsp;Delete
+                    </button>
+                </div>
+                </div>
+            </div>`;
+        })
+        .join("");
+
+        els.grid.innerHTML = html;
+
+        els.grid.querySelectorAll(".card").forEach((card) => {
+        const id = card.getAttribute("data-id");
+        card.querySelectorAll("[data-action]").forEach((btn) =>
+            btn.addEventListener("click", () =>
+            handleCardAction(id, btn.getAttribute("data-action"))
+            )
+        );
+
+        if (isAdmin()) {
+            card.addEventListener("dragstart", (e) => onDragStart(e, id));
+            card.addEventListener("dragover", (e) => onDragOver(e, card));
+            card.addEventListener("dragleave", () => {
+            card.classList.remove("drop-before", "drop-after");
+            });
+            card.addEventListener("drop", (e) => onDrop(e, id, card));
+            card.addEventListener("dragend", () => {
+            card.classList.remove("dragging");
+            draggingId = null;
+            });
+        }
+        });
+    }
+
+    function onDragStart(e, id) {
+        draggingId = id;
+        e.dataTransfer.effectAllowed = "move";
+        e.dataTransfer.setData("text/plain", id);
+        e.currentTarget.classList.add("dragging");
+    }
+    function onDragOver(e, card) {
+        e.preventDefault();
+        if (!draggingId) return;
+        const rect = card.getBoundingClientRect();
+        const y = e.clientY - rect.top;
+        const half = rect.height / 2;
+        card.classList.toggle("drop-before", y < half);
+        card.classList.toggle("drop-after", y >= half);
+    }
+    function onDrop(e, targetId, card) {
+        e.preventDefault();
+        card.classList.remove("drop-before", "drop-after");
+        const fromId = draggingId || e.dataTransfer.getData("text/plain");
+        if (!fromId || fromId === targetId) return;
+
+        const fromIndex = tasks.findIndex((t) => t.id === fromId);
+        const toIndex = tasks.findIndex((t) => t.id === targetId);
+        if (fromIndex === -1 || toIndex === -1) return;
+
+        const rect = card.getBoundingClientRect();
+        const insertBefore = e.clientY - rect.top < rect.height / 2;
+
+        const [moved] = tasks.splice(fromIndex, 1);
+        let newIndex = toIndex;
+        if (!insertBefore) newIndex = toIndex + (fromIndex < toIndex ? 0 : 1);
+        if (insertBefore) newIndex = toIndex + (fromIndex < toIndex ? -1 : 0);
+        newIndex = clamp(newIndex, 0, tasks.length);
+
+        tasks.splice(newIndex, 0, moved);
+        render();
+        saveAll("Order saved");
+    }
+
+    function openEditor(task = null) {
+        if (!isAdmin()) {
+        showToast("Admin only");
+        return;
+        }
+        editingId = task ? task.id : null;
+
+        els.editorTitle.textContent = task ? "Edit task" : "New task";
+        els.title.value = task ? task.title : "";
+        els.desc.value = task ? task.desc : "";
+        els.mode.value = task ? task.mode : "manual";
+        els.percent.value = task ? Math.round(task.percent || 0) : 0;
+        els.manualValue.textContent = fmtPct(els.percent.value);
+        els.start.value = task && task.start ? toLocalInput(task.start) : "";
+        els.end.value = task && task.end ? toLocalInput(task.end) : "";
+        els.c1.value = task ? task.c1 : "#00f6a9";
+        els.c2.value = task ? task.c2 : "#00a7ff";
+
+        els.manualGroup.style.display =
+        (task ? task.mode : "manual") === "manual" ? "block" : "none";
+        els.timeGroup.style.display =
+        (task ? task.mode : "manual") === "time" ? "block" : "none";
+
+        toggleModal(els.editModal, true);
+    }
+
+    function handleCardAction(id, action) {
+        if (!isAdmin()) {
+        showToast("Admin only");
+        return;
+        }
+        if (action === "edit") {
+        const t = tasks.find((x) => x.id === id);
+        if (!t) return;
+        openEditor(t);
+        } else if (action === "delete") {
+        if (confirm("Delete this task?")) {
+            tasks = tasks.filter((x) => x.id !== id);
+            render();
+            saveAll("Task deleted");
+        }
+        }
+    }
+
+    function toLocalInput(iso) {
+        const d = new Date(iso);
+        const pad = (n) => String(n).padStart(2, "0");
+        return `${d.getFullYear()}-${pad(d.getMonth() + 1)}-${pad(d.getDate())}T${pad(
+        d.getHours()
+        )}:${pad(d.getMinutes())}`;
+    }
+
+    function saveEditor() {
+        const title = els.title.value.trim();
+        const desc = els.desc.value.trim();
+        const mode = els.mode.value;
+        const percent = clamp(parseInt(els.percent.value || "0", 10), 0, 100);
+        const c1 = els.c1.value.trim() || "#00f6a9";
+        const c2 = els.c2.value.trim() || "#00a7ff";
+
+        let start = null,
+        end = null;
+        if (mode === "time") {
+        const s = els.start.value ? new Date(els.start.value) : null;
+        const e = els.end.value ? new Date(els.end.value) : null;
+        if (!s || !e || isNaN(s) || isNaN(e)) {
+            showToast("Set Start and End for Time mode");
+            return;
+        }
+        start = s.toISOString();
+        end = e.toISOString();
+        }
+
+        if (!title) {
+        showToast("Give it a title");
+        return;
+        }
+
+        if (editingId) {
+        const t = tasks.find((x) => x.id === editingId);
+        if (!t) return;
+        const prevPct = computePct(t);
+
+        t.title = title;
+        t.desc = desc;
+        t.mode = mode;
+        t.percent = mode === "manual" ? percent : t.percent || 0;
+        t.start = mode === "time" ? start : null;
+        t.end = mode === "time" ? end : null;
+        t.c1 = c1;
+        t.c2 = c2;
+        t.updatedAt = now();
+
+        const newPct = computePct(t);
+        if (newPct >= 100 && prevPct < 100) {
+            maybeCelebrate(t, newPct);
+        }
+        } else {
+        const newTask = {
+            id: uid(),
+            title,
+            desc,
+            mode,
+            percent: mode === "manual" ? percent : 0,
+            start: mode === "time" ? start : null,
+            end: mode === "time" ? end : null,
+            c1,
+            c2,
+            createdAt: now(),
+            updatedAt: now()
+        };
+        tasks.unshift(newTask);
+        const p = computePct(newTask);
+        if (p >= 100) maybeCelebrate(newTask, p);
+        }
+
+        toggleModal(els.editModal, false);
+        render();
+        saveAll("Saved");
+    }
+
+    function toggleModal(modal, show) {
+        modal.classList.toggle("show", !!show);
+    }
+
+    // Pixel confetti (igual que tu versión anterior)
+    const Confetti = (() => {
+        const canvas = els.confetti;
+        const ctx = canvas.getContext("2d");
+        const colors = ["#00f6a9", "#00a7ff", "#a855f7", "#ffd54d", "#34d399", "#ff5178"];
+        let W = 0,
+        H = 0;
+        let parts = [];
+        let raf = null;
+
+        const resize = () => {
+        W = (canvas.width = window.innerWidth);
+        H = (canvas.height = window.innerHeight);
+        ctx.imageSmoothingEnabled = false;
+        };
+        window.addEventListener("resize", resize);
+        resize();
+
+        function burst(x = W / 2, y = H / 3, n = 240) {
+        for (let i = 0; i < n; i++) {
+            const a = Math.random() * Math.PI * 2;
+            const s = 2 + Math.random() * 5;
+            parts.push({
+            x,
+            y,
+            vx: Math.cos(a) * s,
+            vy: Math.sin(a) * s - 3,
+            g: 0.12 + Math.random() * 0.12,
+            s: 6 + ((Math.random() * 8) | 0),
+            c: colors[(Math.random() * colors.length) | 0],
+            life: 70 + ((Math.random() * 40) | 0)
+            });
+        }
+        }
+
+        function tick() {
+        ctx.clearRect(0, 0, W, H);
+        if (!parts.length) {
+            raf = null;
+            return;
+        }
+        parts.forEach((p) => {
+            p.vy += p.g;
+            p.x += p.vx;
+            p.y += p.vy;
+            p.life--;
+        });
+        parts = parts.filter((p) => p.life > 0 && p.y < H + 20);
+        parts.forEach((p) => {
+            ctx.fillStyle = p.c;
+            ctx.fillRect(p.x | 0, p.y | 0, p.s, p.s);
+        });
+        raf = requestAnimationFrame(tick);
+        }
+
+        return {
+        celebrate() {
+            burst(W / 2, H / 3, 260);
+            burst(W / 2, H / 3, 120);
+            if (!raf) raf = requestAnimationFrame(tick);
+        }
+        };
+    })();
+
+    // Time-mode UI refresh (no escribe al servidor)
+    setInterval(() => {
+        document.querySelectorAll(".card").forEach((card) => {
+        const id = card.getAttribute("data-id");
+        const t = tasks.find((x) => x.id === id);
+        if (!t) return;
+        if (t.mode !== "time") return;
+        const fill = card.querySelector(".progress-fill");
+        const labels = card.querySelector(".progress-labels span:last-child");
+        if (fill) fill.style.setProperty("--w", computePct(t) + "%");
+        if (labels) labels.textContent = fmtPct(computePct(t));
+        const cd = card.querySelector(".countdown");
+        if (cd) cd.textContent = fmtCountdown(t);
+        });
+    }, 1000);
+
+    // Events
+    els.addTaskBtn?.addEventListener("click", () => openEditor());
+    els.mode.addEventListener("change", () => {
+        const m = els.mode.value;
+        els.manualGroup.style.display = m === "manual" ? "block" : "none";
+        els.timeGroup.style.display = m === "time" ? "block" : "none";
+    });
+    els.percent.addEventListener("input", () => {
+        els.manualValue.textContent = fmtPct(els.percent.value);
+    });
+    els.cancelEdit.addEventListener("click", () =>
+        toggleModal(els.editModal, false)
+    );
+    els.saveTask.addEventListener("click", saveEditor);
+    els.deleteTask.addEventListener("click", () => {
+        if (!editingId) return toggleModal(els.editModal, false);
+        const t = tasks.find((x) => x.id === editingId);
+        if (!t) return toggleModal(els.editModal, false);
+        if (confirm("Delete this task?")) {
+        tasks = tasks.filter((x) => x.id !== editingId);
+        toggleModal(els.editModal, false);
+        render();
+        saveAll("Task deleted");
+        }
+    });
+
+    [els.editModal].forEach((modal) => {
+        modal.addEventListener("click", (e) => {
+        if (e.target === modal) toggleModal(modal, false);
+        });
+    });
+    window.addEventListener("keydown", (e) => {
+        if (e.key === "Escape") toggleModal(els.editModal, false);
+    });
+
+    async function boot() {
+        try {
+            const data = await API.fetch();
+            serverVersion = data.version || 0;
+            tasks = Array.isArray(data.tasks) ? data.tasks : [];
+            render();
+        } catch (e) {
+            tasks = [];
+            render();
+        }
+
+        // confeti al entrar si ya hay tareas completadas
+        completedIds = computeCompletedIds(tasks);
+        confettiOnEntryIfCompleted();
+
+        connectWS();
+        }
+
+    async function saveAll(msg = "Saved") {
+        if (!isAdmin()) return;
+        try {
+        await API.save(tasks);
+        showToast(msg);
+        // El WS del servidor emitirá el set → todos (tú incluido) se sincronizan
+        } catch (e) {
+        showToast("Save failed");
+        }
+    }
+
+    boot();
+    </script>
+  </body>
+</html>
