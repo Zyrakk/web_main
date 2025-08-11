@@ -7,7 +7,7 @@
       content="width=device-width, initial-scale=1, viewport-fit=cover"
     />
     <link rel="icon" href="./sources/favicon_task.ico" type="image/x-icon">
-    <title>To‑Do Pulse — Pixel Edition</title>
+    <title>Z - Tasks</title>
 
     <link
       href="https://fonts.googleapis.com/css2?family=Press+Start+2P&family=VT323&display=swap"
@@ -27,6 +27,8 @@
         --danger: #ff5178;
         --text: #cfffe9;
         --muted: #86e8c9;
+        --focus: #ff6b00;
+        --focus-glow: rgba(255, 107, 0, 0.6);
         --px: 8px; /* pixel corner */
         --pad: clamp(14px, 4vw, 24px);
         --gap: clamp(10px, 3.2vw, 16px);
@@ -144,58 +146,141 @@
       .brand {
         display: flex;
         align-items: center;
-        gap: 12px;
-        filter: drop-shadow(0 0 12px rgba(0, 255, 170, 0.25));
+        gap: 16px;
+        filter: drop-shadow(0 0 20px rgba(0, 255, 170, 0.4));
+      }
+      .logo-container {
+        position: relative;
+        display: flex;
+        align-items: center;
+        gap: 8px;
       }
       .logo {
-        width: clamp(34px, 9vw, 44px);
-        height: clamp(34px, 9vw, 44px);
+        width: clamp(40px, 10vw, 52px);
+        height: clamp(40px, 10vw, 52px);
         display: grid;
         place-items: center;
-        background: conic-gradient(
-          from 150deg,
-          var(--ui),
-          var(--ui-2),
-          var(--ui-3),
-          var(--warn),
-          var(--ui)
-        );
+        background: linear-gradient(45deg, 
+          #ff0080 0%, 
+          #ff6b00 25%, 
+          #00f6a9 50%, 
+          #00a7ff 75%, 
+          #a855f7 100%);
+        background-size: 400% 400%;
         clip-path: polygon(
-          0 var(--px),
-          var(--px) var(--px),
-          var(--px) 0,
-          calc(100% - var(--px)) 0,
-          calc(100% - var(--px)) var(--px),
-          100% var(--px),
-          100% calc(100% - var(--px)),
-          calc(100% - var(--px)) calc(100% - var(--px)),
-          calc(100% - var(--px)) 100%,
-          var(--px) 100%,
-          var(--px) calc(100% - var(--px)),
-          0 calc(100% - var(--px))
+          20% 0%, 80% 0%, 100% 20%, 100% 80%, 80% 100%, 20% 100%, 0% 80%, 0% 20%
         );
-        box-shadow: 0 0 20px rgba(0, 255, 170, 0.35);
-        animation: spin 10s linear infinite;
+        box-shadow: 
+          0 0 30px rgba(0, 255, 170, 0.6),
+          0 0 60px rgba(255, 107, 0, 0.3),
+          inset 0 0 20px rgba(255, 255, 255, 0.2);
+        animation: logoGlow 8s ease-in-out infinite, gradientShift 6s ease-in-out infinite;
+        position: relative;
+        overflow: hidden;
+      }
+      .logo::before {
+        content: "";
+        position: absolute;
+        inset: 3px;
+        background: radial-gradient(circle at 30% 30%, rgba(255,255,255,0.8) 0%, transparent 40%);
+        clip-path: polygon(
+          20% 0%, 80% 0%, 100% 20%, 100% 80%, 80% 100%, 20% 100%, 0% 80%, 0% 20%
+        );
       }
       .logo::after {
-        content: "★";
-        font-size: clamp(14px, 3.2vw, 18px);
-        color: #04150e;
+        content: "Z";
+        position: relative;
+        z-index: 2;
+        font-family: "Press Start 2P", monospace;
+        font-size: clamp(18px, 4.5vw, 26px);
+        color: #000;
+        font-weight: bold;
+        text-shadow: 
+          1px 1px 0px rgba(255,255,255,0.8),
+          0 0 10px rgba(0,0,0,0.5);
       }
-      @keyframes spin {
-        to {
-          transform: rotate(360deg);
+      
+      @keyframes logoGlow {
+        0%, 100% {
+          box-shadow: 
+            0 0 30px rgba(0, 255, 170, 0.6),
+            0 0 60px rgba(255, 107, 0, 0.3),
+            inset 0 0 20px rgba(255, 255, 255, 0.2);
+        }
+        50% {
+          box-shadow: 
+            0 0 40px rgba(0, 255, 170, 0.8),
+            0 0 80px rgba(255, 107, 0, 0.5),
+            0 0 120px rgba(168, 85, 247, 0.3),
+            inset 0 0 30px rgba(255, 255, 255, 0.3);
         }
       }
+      
+      @keyframes gradientShift {
+        0% {
+          background-position: 0% 50%;
+        }
+        50% {
+          background-position: 100% 50%;
+        }
+        100% {
+          background-position: 0% 50%;
+        }
+      }
+      
       h1 {
         margin: 0;
         font-family: "Press Start 2P", system-ui, monospace;
-        font-size: clamp(14px, 3.8vw, 28px);
-        letter-spacing: 1.2px;
-        background: linear-gradient(90deg, #d1ffe9, #9cf7ff, #e1c6ff);
+        font-size: clamp(18px, 4.5vw, 32px);
+        letter-spacing: 2px;
+        background: linear-gradient(135deg, 
+          #ff0080 0%, 
+          #ff6b00 20%,
+          #00f6a9 40%, 
+          #00a7ff 60%, 
+          #a855f7 80%,
+          #ff0080 100%);
+        background-size: 300% 300%;
         -webkit-background-clip: text;
         background-clip: text;
         color: transparent;
+        animation: textShimmer 4s ease-in-out infinite;
+        text-shadow: 0 0 30px rgba(0, 255, 170, 0.5);
+        position: relative;
+      }
+      
+      h1::before {
+        content: "Z - TASKS";
+        position: absolute;
+        top: 0;
+        left: 0;
+        background: linear-gradient(135deg, 
+          rgba(255, 255, 255, 0.9) 0%, 
+          rgba(0, 246, 169, 0.8) 50%, 
+          rgba(255, 255, 255, 0.9) 100%);
+        -webkit-background-clip: text;
+        background-clip: text;
+        color: transparent;
+        opacity: 0;
+        animation: textGlow 6s ease-in-out infinite;
+      }
+      
+      @keyframes textShimmer {
+        0%, 100% {
+          background-position: 0% 50%;
+        }
+        50% {
+          background-position: 100% 50%;
+        }
+      }
+      
+      @keyframes textGlow {
+        0%, 80%, 100% {
+          opacity: 0;
+        }
+        90% {
+          opacity: 1;
+        }
       }
 
       .header-actions {
@@ -313,6 +398,80 @@
         background: linear-gradient(90deg, var(--c1, var(--ui)), var(--c2, var(--ui-2)));
         opacity: 0.9;
       }
+      
+      /* Focus effect */
+      .card.focused {
+        border: 3px solid var(--focus);
+        box-shadow: 
+          0 0 0 2px var(--focus-glow) inset,
+          0 0 30px var(--focus-glow),
+          0 0 60px rgba(255, 107, 0, 0.4),
+          0 18px 60px rgba(0, 0, 0, 0.7);
+        animation: focusPulse 2s ease-in-out infinite;
+      }
+      .card.focused::before {
+        background: linear-gradient(90deg, var(--focus), #ff9500, var(--focus));
+        height: 6px;
+        animation: focusGlow 2s ease-in-out infinite;
+      }
+      .card.focused::after {
+        content: "🎯 FOCUS";
+        position: absolute;
+        top: 8px;
+        right: 8px;
+        background: linear-gradient(45deg, var(--focus), #ff9500);
+        color: #000;
+        font-family: "Press Start 2P", monospace;
+        font-size: 8px;
+        padding: 4px 6px;
+        clip-path: polygon(
+          0 2px, 2px 2px, 2px 0, calc(100% - 2px) 0, calc(100% - 2px) 2px,
+          100% 2px, 100% calc(100% - 2px), calc(100% - 2px) calc(100% - 2px),
+          calc(100% - 2px) 100%, 2px 100%, 2px calc(100% - 2px), 0 calc(100% - 2px)
+        );
+        box-shadow: 0 0 15px var(--focus-glow);
+        animation: focusLabel 2s ease-in-out infinite;
+      }
+      
+      @keyframes focusPulse {
+        0%, 100% {
+          box-shadow: 
+            0 0 0 2px var(--focus-glow) inset,
+            0 0 30px var(--focus-glow),
+            0 0 60px rgba(255, 107, 0, 0.4),
+            0 18px 60px rgba(0, 0, 0, 0.7);
+        }
+        50% {
+          box-shadow: 
+            0 0 0 3px var(--focus-glow) inset,
+            0 0 40px var(--focus-glow),
+            0 0 80px rgba(255, 107, 0, 0.6),
+            0 18px 60px rgba(0, 0, 0, 0.7);
+        }
+      }
+      
+      @keyframes focusGlow {
+        0%, 100% {
+          opacity: 0.9;
+          box-shadow: 0 0 20px var(--focus-glow);
+        }
+        50% {
+          opacity: 1;
+          box-shadow: 0 0 30px var(--focus-glow);
+        }
+      }
+      
+      @keyframes focusLabel {
+        0%, 100% {
+          transform: scale(1);
+          box-shadow: 0 0 15px var(--focus-glow);
+        }
+        50% {
+          transform: scale(1.05);
+          box-shadow: 0 0 25px var(--focus-glow);
+        }
+      }
+      
       .card .inner {
         padding: 14px 14px 16px 14px;
         display: flex;
@@ -508,6 +667,14 @@
       }
       .icon-btn:hover {
         transform: translateY(-2px);
+      }
+      .icon-btn.focus-btn {
+        border-color: var(--focus);
+        background: linear-gradient(45deg, var(--focus), #ff9500);
+        color: #000;
+      }
+      .icon-btn.focus-btn.active {
+        box-shadow: 0 0 20px var(--focus-glow);
       }
       .icon {
         width: 14px;
@@ -714,8 +881,10 @@
     <div class="container" id="app">
       <header>
         <div class="brand">
-          <div class="logo" aria-hidden="true"></div>
-          <h1>To‑Do Pulse — PIXEL</h1>
+          <div class="logo-container">
+            <div class="logo" aria-hidden="true"></div>
+          </div>
+          <h1>Z - TASKS</h1>
         </div>
 
         <div class="header-actions">
@@ -1041,6 +1210,10 @@
             <rect x="6" y="15" width="3" height="3"/><rect x="15" y="5" width="3" height="3"/>
             <rect x="15" y="10" width="3" height="3"/><rect x="15" y="15" width="3" height="3"/>
         </svg>`;
+        if (name === "focus")
+        return `<svg class="icon" viewBox="0 0 24 24" fill="currentColor">
+            <path d="M12 2l2.09 6.26L20 10l-5.91 1.74L12 18l-2.09-6.26L4 10l5.91-1.74L12 2z"/>
+        </svg>`;
         return "";
     }
 
@@ -1073,6 +1246,7 @@
             const pct = computePct(t);
             const done = pct >= 100;
             const countdown = fmtCountdown(t);
+            const focused = !!t.focused;
             const modeChip = admin
             ? t.mode === "time"
                 ? `<span class="chip admin-only">Time</span>`
@@ -1083,7 +1257,7 @@
             : "";
 
             return `
-            <div class="card" data-id="${t.id}"
+            <div class="card ${focused ? 'focused' : ''}" data-id="${t.id}"
                 style="--c1:${t.c1};--c2:${t.c2};"
                 ${admin ? 'draggable="true"' : ""}>
                 <div class="inner">
@@ -1092,7 +1266,7 @@
                     <div class="meta">
                     ${
                         admin
-                        ? `<span class="drag-handle">${icon("grip")}&nbsp;Move</span>`
+                        ? `<span class="drag-handle">${icon("grip")}</span>`
                         : ""
                     }
                     ${modeChip}
@@ -1114,6 +1288,9 @@
                 ${cdHtml}
 
                 <div class="card-actions admin-only">
+                    <button class="icon-btn focus-btn ${focused ? 'active' : ''}" data-action="focus" title="Toggle Focus">
+                    ${icon("focus")}&nbsp;${focused ? 'Unfocus' : 'Focus'}
+                    </button>
                     <button class="icon-btn" data-action="edit">
                     ${icon("edit")}&nbsp;Edit
                     </button>
@@ -1231,6 +1408,13 @@
             render();
             saveAll("Task deleted");
         }
+        } else if (action === "focus") {
+        const t = tasks.find((x) => x.id === id);
+        if (!t) return;
+        t.focused = !t.focused;
+        t.updatedAt = now();
+        render();
+        saveAll(t.focused ? "Task focused" : "Task unfocused");
         }
     }
 
@@ -1298,6 +1482,7 @@
             end: mode === "time" ? end : null,
             c1,
             c2,
+            focused: false,
             createdAt: now(),
             updatedAt: now()
         };
