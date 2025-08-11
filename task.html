@@ -6,7 +6,7 @@
       name="viewport"
       content="width=device-width, initial-scale=1, viewport-fit=cover"
     />
-    <link rel="icon" href="./sources/favicon_task.ico" type="image/x-icon">
+    <link rel="icon" href="/sources/favicon_task.ico" type="image/x-icon">
     <title>Z - Tasks</title>
 
     <link
@@ -1398,23 +1398,22 @@
         showToast("Admin only");
         return;
         }
+        const t = tasks.find((x) => x.id === id);
+        if (!t) return;
+
         if (action === "edit") {
-        const t = tasks.find((x) => x.id === id);
-        if (!t) return;
-        openEditor(t);
+            openEditor(t);
         } else if (action === "delete") {
-        if (confirm("Delete this task?")) {
-            tasks = tasks.filter((x) => x.id !== id);
-            render();
-            saveAll("Task deleted");
-        }
+            if (confirm("Delete this task?")) {
+                tasks = tasks.filter((x) => x.id !== id);
+                render();
+                saveAll("Task deleted");
+            }
         } else if (action === "focus") {
-        const t = tasks.find((x) => x.id === id);
-        if (!t) return;
-        t.focused = !t.focused;
-        t.updatedAt = now();
-        render();
-        saveAll(t.focused ? "Task focused" : "Task unfocused");
+            t.focused = !t.focused;
+            t.updatedAt = now();
+            render();
+            saveAll(t.focused ? "Task focused" : "Task unfocused");
         }
     }
 
