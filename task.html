@@ -381,6 +381,8 @@
           0 12px 40px rgba(0, 0, 0, 0.55);
         transition: transform 0.18s ease, box-shadow 0.18s ease;
         padding: 0; /* for accent line */
+      }
+      .admin-on .card {
         cursor: grab;
       }
       .card:hover {
@@ -654,14 +656,6 @@
       }
       .icon-btn:hover {
         transform: translateY(-2px);
-      }
-      .icon-btn.focus-btn {
-        border-color: var(--focus);
-        background: linear-gradient(45deg, var(--focus), #ff9500);
-        color: #000;
-      }
-      .icon-btn.focus-btn.active {
-        box-shadow: 0 0 20px var(--focus-glow);
       }
       .icon {
         width: 14px;
@@ -1235,10 +1229,6 @@
             d="M19.5 7.5l-.867 12.142A2.25 2.25 0 0116.39 22H7.61a2.25
             2.25 0 01-2.243-2.358L4.5 7.5m3 0V5.25A2.25 2.25 0 019.75 3h4.5A2.25
             2.25 0 0116.5 5.25V7.5m-9 0h11.25M9.75 11.25v6m4.5-6v6"/></svg>`;
-        if (name === "focus")
-        return `<svg class="icon" viewBox="0 0 24 24" fill="currentColor">
-            <path d="M12 2l2.09 6.26L20 10l-5.91 1.74L12 18l-2.09-6.26L4 10l5.91-1.74L12 2z"/>
-        </svg>`;
         return "";
     }
 
@@ -1308,9 +1298,6 @@
                 ${cdHtml}
 
                 <div class="card-actions admin-only">
-                    <button class="icon-btn focus-btn ${focused ? 'active' : ''}" data-action="focus" title="Toggle Focus">
-                    ${icon("focus")}&nbsp;${focused ? 'Unfocus' : 'Focus'}
-                    </button>
                     <button class="icon-btn" data-action="edit">
                     ${icon("edit")}&nbsp;Edit
                     </button>
@@ -1417,8 +1404,8 @@
 
     function handleCardAction(id, action) {
         if (!isAdmin()) {
-        showToast("Admin only");
-        return;
+            showToast("Admin only");
+            return;
         }
         const t = tasks.find((x) => x.id === id);
         if (!t) return;
@@ -1431,11 +1418,6 @@
                 render();
                 saveAll("Task deleted");
             }
-        } else if (action === "focus") {
-            t.focused = !t.focused;
-            t.updatedAt = now();
-            render();
-            saveAll(t.focused ? "Task focused" : "Task unfocused");
         }
     }
 
@@ -1479,7 +1461,6 @@
         if (!t) return;
         const prevPct = computePct(t);
 
-        // Preserve existing fields and update with new values
         Object.assign(t, {
             title,
             desc,
