@@ -5,7 +5,7 @@
     ).matches,
     rafId: null,
     hueIndex: 0,
-    hues: [268, 152, 210, 12, 328], // Blue, Green, Purple, Orange, Pink
+    hues: [268, 152, 210, 12, 328], // Purple, Green, Blue, Orange, Pink
     user: "Zyrakk",
     repos: [
       {
