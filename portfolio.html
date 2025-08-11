@@ -1,145 +1,285 @@
 <!DOCTYPE html>
-<html lang="es">
-<head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <meta name="description" content="Discover my projects in cybersecurity, automation, and DevSecOps. Focused on secure system development.">
-  <!--   ^ ^
-        (O,O)
-        (   )
-        -"-"-- -->
-  <title>Zyrakk's Portfolio</title>
-  <!-- Fuentes -->
-  <link rel="preconnect" href="https://fonts.googleapis.com" />
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&display=swap" />
-  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" />
-  <link rel="icon" href="./sources/favicon.ico" type="image/x-icon">
-  <!-- CSS Principal -->
-  <link rel="stylesheet" href="./assets/styles_portfolio.css" />
-</head>
-<body>
+<html lang="en" data-theme="dark">
+  <head>
+    <meta charset="UTF-8" />
+    <meta
+      name="viewport"
+      content="width=device-width, initial-scale=1, viewport-fit=cover"
+    />
+    <meta
+      name="description"
+      content="Zyrakk — DevSecOps portfolio with a custom generative WebGL background. Minimalist, focused design."
+    />
+    <meta name="author" content="Zyrakk" />
+    <meta name="robots" content="index, follow" />
+    <meta name="theme-color" content="#0A0F18" />
 
-  <!-- NAVBAR -->
-  <header class="header">
-    <nav class="navbar">
-        <div class="navbar-left">
-            <div class="logo">Zyrakk</div>
-            <button class="menu-toggle" aria-label="Toggle navigation">☰</button>
+    <meta property="og:title" content="Zyrakk — DevSecOps Portfolio" />
+    <meta
+      property="og:description"
+      content="A focused portfolio showcasing projects in cybersecurity and automation, with a unique generative art backdrop."
+    />
+    <meta property="og:type" content="website" />
+    <meta property="og:url" content="https://your-domain.com" />
+    <meta property="og:image" content="https://your-domain.com/og.jpg" />
+
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:creator" content="@Zyrakk195357" />
+
+    <link rel="canonical" href="https://your-domain.com" />
+    <link rel="icon" href="./sources/favicon.ico" type="image/x-icon" />
+
+    <title>Zyrakk — DevSecOps</title>
+
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;700&family=IBM+Plex+Mono:wght@400;700&display=swap"
+      rel="stylesheet"
+    />
+
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css"
+      integrity="sha512-DTOQO9RWCH3ppGqcWaEA1BIZOC6xxalwEsw9c2QQeAIftl+Vegovlnee1c9QX4TctnWMn13TZye+giMm8e2LwA=="
+      crossorigin="anonymous"
+      referrerpolicy="no-referrer"
+    />
+
+    <link rel="stylesheet" href="./assets/portfolio_styles.css" />
+  </head>
+
+  <body>
+    <div id="bg">
+      <canvas id="gl"></canvas>
+      <div class="vignette"></div>
+    </div>
+
+    <a class="skip-link" href="#home">Skip to content</a>
+
+    <header class="header" role="banner">
+      <nav class="navbar container" aria-label="Primary">
+        <a href="#home" class="logo" aria-label="Home">Zyrakk<span
+            class="dot"
+            >.</span
+          ></a>
+
+        <div class="nav-actions">
+          <button
+            class="palette"
+            id="palette"
+            title="Change accent"
+            aria-label="Change accent palette"
+          >
+            <span class="swatch"></span>
+          </button>
+          <button
+            class="menu-toggle"
+            aria-label="Toggle navigation"
+            aria-expanded="false"
+          >
+            <i class="fa-solid fa-bars"></i>
+          </button>
         </div>
 
-        <div class="nav-container">
-            <ul class="nav-other-pages">
-                <li><a href="./mybb">Z-Forum</a></li>
-                <li><a href="./login.php">Login / Sign Up</a></li>
-            </ul>
-            <ul class="navbar-right">
-                <li><a href="#home">Home</a></li>
-                <li><a href="#projects">Projects</a></li>
-                <li><a href="#skills">Skills</a></li>
-                <li><a href="#socials">Socials</a></li>
-            </ul>
+        <div class="nav-container" id="nav-menu">
+          <ul class="navbar-right">
+            <li><a href="#home">Home</a></li>
+            <li><a href="#projects">Projects</a></li>
+            <li><a href="#lab">Lab</a></li>
+            <li><a href="#contact">Contact</a></li>
+          </ul>
         </div>
-    </nav>
-</header>
+      </nav>
+    </header>
 
-
-  <!-- HERO / PORTADA -->
-  <section id="home" class="hero">
-    <div class="hero-container">
-      <div class="hero-text">
-        <h1><span class="highlight">Hey!</span> I'm Zyrakk</h1>
-        <p>DevSecOps Enthusiast <br/> Secure System Automation</p>
-        <a href="#projects" class="btn-hero">See Projects</a>
+    <main id="home" class="hero">
+      <div class="container hero-inner">
+        <h1 class="title">
+          <span class="line1">Zyrakk</span>
+          <span class="line2">DevSecOps</span>
+        </h1>
+        <p class="subtitle">
+          Building secure, automated, and observable systems.
+        </p>
+        <div class="cta">
+          <a href="#projects" class="btn btn-primary">
+            <i class="fa-solid fa-diagram-project"></i> View projects
+          </a>
+        </div>
       </div>
-      <div class="hero-image">
-        <img src="./sources/purple_.gif" alt="Purple Gif" />
+    </main>
+
+    <section id="projects" class="section projects">
+      <div class="container">
+        <div class="section-head">
+          <h2>// Projects</h2>
+        </div>
+
+        <div class="project-stack">
+          <article class="project-card reveal" data-repo="MiniSec">
+            <div class="card-content">
+              <div class="card-bg" aria-hidden="true"></div>
+              <header class="card-header">
+                <h3>MiniSec</h3>
+                <span class="status live">Live</span>
+              </header>
+              <p id="desc-minisec" class="desc">Loading…</p>
+              <div class="meta">
+                <span id="lang-minisec" class="tag">—</span>
+                <span id="stars-minisec" class="tag">
+                  <i class="fa-regular fa-star"></i> —
+                </span>
+                <span id="upd-minisec" class="tag">Updated: —</span>
+              </div>
+            </div>
+            <a
+              class="repo-link"
+              href="https://github.com/Zyrakk/MiniSec"
+              target="_blank"
+              rel="noopener"
+              aria-label="View MiniSec on GitHub"
+            >
+              <i class="fab fa-github"></i>
+              <span>Repository</span>
+            </a>
+          </article>
+
+          <article class="project-card reveal" data-repo="video_server">
+            <div class="card-content">
+              <div class="card-bg" aria-hidden="true"></div>
+              <header class="card-header">
+                <h3>Nginx-RTMP Server</h3>
+                <span class="status live">Live</span>
+              </header>
+              <p id="desc-vsrv" class="desc">Loading…</p>
+              <div class="meta">
+                <span id="lang-vsrv" class="tag">—</span>
+                <span id="stars-vsrv" class="tag">
+                  <i class="fa-regular fa-star"></i> —
+                </span>
+                <span id="upd-vsrv" class="tag">Updated: —</span>
+              </div>
+            </div>
+            <a
+              class="repo-link"
+              href="https://github.com/Zyrakk/video_server"
+              target="_blank"
+              rel="noopener"
+              aria-label="View Nginx-RTMP Server on GitHub"
+            >
+              <i class="fab fa-github"></i>
+              <span>Repository</span>
+            </a>
+          </article>
+
+          <article class="project-card reveal">
+            <div class="card-content">
+              <div class="card-bg" aria-hidden="true"></div>
+              <header class="card-header">
+                <h3>Project #3</h3>
+                <span class="status wip">WIP</span>
+              </header>
+              <p class="desc">A new project is currently in development.</p>
+              <div class="meta">
+                <span class="tag">Private</span>
+                <span class="tag">Design Phase</span>
+              </div>
+            </div>
+            <div class="repo-link disabled" aria-disabled="true">
+              <i class="fa-solid fa-lock"></i>
+              <span>Locked</span>
+            </div>
+          </article>
+        </div>
       </div>
-    </div>
-  </section>
+    </section>
 
+    <section id="lab" class="section lab">
+      <div class="container">
+        <div class="section-head">
+          <h2>// Lab</h2>
+        </div>
 
-  <!-- SECCIÓN PROYECTOS -->
-  <section id="projects" class="projects">
-    <div class="section-title">
-      <h2>My Projects</h2>
-      <p>A glimpse of some of my projects</p>
-    </div>
-    <div class="project-cards">
-      <article class="project-card">
-        <div class="card-image mini-sec"></div>
-        <h3>MiniSec</h3>
-        <p id="repo-description_1">Cargando descripción...</p>
-        <a href="https://github.com/Zyrakk/MiniSec" target="_blank" class="github-link">
-            <i class="fab fa-github"></i> Repository
-        </a>
-      </article>
+        <div class="lab-grid">
+          <div class="panel reveal">
+            <h3>Core Stack</h3>
+            <div class="chips">
+              <span class="chip">Python</span>
+              <span class="chip">Bash</span>
+              <span class="chip">Docker</span>
+              <span class="chip">Nginx</span>
+              <span class="chip">AWS</span>
+              <span class="chip">Git</span>
+              <span class="chip">CI/CD</span>
+              <span class="chip">Terraform</span>
+              <span class="chip">Linux</span>
+              <span class="chip">DevSecOps</span>
+            </div>
+          </div>
 
-      <article class="project-card">
-        <div class="card-image video-server"></div>
-        <h3>Nginx-RTMP Server</h3>
-        <p id="repo-description_2">Cargando descripción...</p>
-        <a href="https://github.com/Zyrakk/video_server" target="_blank" class="github-link">
-            <i class="fab fa-github"></i> Repository
-        </a>
-      </article>
+          <div class="panel reveal">
+            <h3>Focus Areas</h3>
+            <div class="focus-areas">
+              <div class="area">
+                <i class="fa-solid fa-shield-halved"></i>
+                <span>Security</span>
+              </div>
+              <div class="area">
+                <i class="fa-solid fa-gears"></i>
+                <span>Automation</span>
+              </div>
+              <div class="area">
+                <i class="fa-solid fa-cloud"></i>
+                <span>Cloud</span>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
 
-      <article class="project-card">
-        <div class="card-image"></div>
-        <h3>Project #3</h3>
-        <p>Soon...</p>
-        <a href="#" class="btn-card">See more</a>
-      </article>
-    </div>
-  </section>
+    <section id="contact" class="section contact">
+      <div class="container">
+        <div class="section-head">
+          <h2>// Contact</h2>
+        </div>
 
-  <!-- SECCIÓN HABILIDADES -->
-  <section id="skills" class="skills">
-    <div class="section-title">
-      <h2>Skills</h2>
-      <p>Skilled in a wide range of technologies</p>
-    </div>
-    <div class="skills-content">
-      <div class="skill-item">Python</div>
-      <div class="skill-item">Bash Scripting</div>
-      <div class="skill-item">AWS / Amazon Cloud</div>
-      <div class="skill-item">Git</div>
-      <div class="skill-item">Docker</div>
-      <div class="skill-item">HTML, CSS, PHP & JavaScript</div>
-    </div>
-  </section>
+        <div class="contact-grid">
+          <a
+            class="contact-link github"
+            href="https://github.com/Zyrakk"
+            target="_blank"
+            rel="noopener"
+          >
+            <i class="fab fa-github"></i>
+            <span>GitHub</span>
+          </a>
+          <a
+            class="contact-link x"
+            href="https://x.com/Zyrakk195357"
+            target="_blank"
+            rel="noopener"
+          >
+            <i class="fa-brands fa-x-twitter"></i>
+            <span>X (Twitter)</span>
+          </a>
+        </div>
+      </div>
+    </section>
 
-  <!-- SECCIÓN REDES SOCIALES -->
-<section id="socials" class="social-section">
-    <div class="section-title">
-      <h2>Socials</h2>
-      <p>Find me on these platforms</p>
-    </div>
+    <footer class="footer">
+      <div class="container footer-inner">
+        <p>© 2025 Zyrakk. All rights reserved.</p>
+        <nav aria-label="Legal">
+          <a href="#home">Home</a>
+          <a href="#projects">Projects</a>
+          <a href="#lab">Lab</a>
+          <a href="#contact">Contact</a>
+        </nav>
+      </div>
+    </footer>
 
-    <div class="social-icons">
-      <a href="https://github.com/Zyrakk" target="_blank" class="icon github">
-        <i class="fab fa-github"></i>
-        <span>GitHub</span>
-      </a>
-      <a href="https://x.com/Zyrakk195357" target="_blank" class="icon twitter">
-        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" width="24" height="24">
-            <path d="M389.2 48h70.6L305.6 224.2 487 464H345L233.7 318.6 106.5 464H35.8L200.7 275.5 26.8 48H172.4L272.9 180.9 389.2 48zM364.4 421.8h39.1L151.1 88h-42L364.4 421.8z"/>
-        </svg>
-        <span>Twitter</span>
-      </a>
-      <!-- <a href="#" target="_blank" class="icon linkedin">
-        <i class="fab fa-linkedin"></i>
-        <span>LinkedIn</span>
-      </a> -->
-    </div>
-  </section>
-
-
-  <!-- FOOTER -->
-  <footer class="footer">
-    <p>&copy; 2025 Zyrakk. All rights reserved.</p>
-  </footer>
-
-  <script type="text/javascript" src="./scripts/portfolio.js"></script>
-</body>
+    <script src="./assets/app.js" defer></script>
+  </body>
 </html>
