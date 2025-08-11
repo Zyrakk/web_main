@@ -25,13 +25,17 @@
     ]
   };
 
+  // Se define una función global vacía que será reemplazada por la real
+  // cuando WebGL se inicialice. Esto evita errores si se llama antes.
+  window.glUpdateHue = () => {};
+
   document.addEventListener("DOMContentLoaded", () => {
     initMenu();
     initReveal();
     initGitHub();
-    initPalette();
+    initPalette(); // Se ejecuta primero, establece el color CSS
     initNavHighlight();
-    initWebGLBackground();
+    initWebGLBackground(); // Se ejecuta después, lee el color ya establecido
     handleVisibilityPause();
   });
 
@@ -115,11 +119,20 @@
     const root = document.documentElement;
     const saved = localStorage.getItem("hueIndex");
     if (saved) state.hueIndex = parseInt(saved, 10) % state.hues.length;
+
+    // 1. Establece el color en la variable CSS
     root.style.setProperty("--hue", `${state.hues[state.hueIndex]}`);
+
+    // 2. Llama a la función para actualizar el color en WebGL
+    window.glUpdateHue();
+
     btn?.addEventListener("click", () => {
       state.hueIndex = (state.hueIndex + 1) % state.hues.length;
       root.style.setProperty("--hue", `${state.hues[state.hueIndex]}`);
       localStorage.setItem("hueIndex", String(state.hueIndex));
+
+      // 3. Cada vez que se cambia, se notifica a WebGL
+      window.glUpdateHue();
     });
   }
 
@@ -271,6 +284,19 @@
     const uTime = gl.getUniformLocation(prog, "t");
     const uHue = gl.getUniformLocation(prog, "h");
 
+    // NUEVO: Función dedicada a actualizar el color en WebGL
+    function updateHueUniform() {
+      if (!gl || !prog) return;
+      const hueVar = getComputedStyle(
+        document.documentElement
+      ).getPropertyValue("--hue");
+      gl.useProgram(prog); // Asegurarse de que el programa está activo
+      gl.uniform1f(uHue, parseFloat(hueVar || "210"));
+    }
+
+    // Se sobreescribe la función global con la real que tiene acceso a `gl`
+    window.glUpdateHue = updateHueUniform;
+
     function resize() {
       const dpr = Math.min(window.devicePixelRatio || 1, 2);
       const w = Math.floor(canvas.clientWidth * dpr);
@@ -286,19 +312,18 @@
     resize();
     window.addEventListener("resize", onResize);
 
-    // Mouse listener removed
-
     let start = performance.now();
     const loop = (now) => {
       const t = (now - start) * 0.0005;
       gl.uniform1f(uTime, t);
-      const hueVar = getComputedStyle(
-        document.documentElement
-      ).getPropertyValue("--hue");
-      gl.uniform1f(uHue, parseFloat(hueVar || "210"));
+
+      // ELIMINADO: La lectura del color ya no se hace 60 veces por segundo
       gl.drawArrays(gl.TRIANGLES, 0, 6);
       state.rafId = requestAnimationFrame(loop);
     };
+
+    // Se establece el color inicial una vez antes de que comience el bucle
+    updateHueUniform();
     state.rafId = requestAnimationFrame(loop);
   }
 
@@ -319,6 +344,7 @@
         if (state.rafId) cancelAnimationFrame(state.rafId);
         state.rafId = null;
       } else {
+        // Re-inicializa la animación al volver a la pestaña
         initWebGLBackground();
       }
     });
