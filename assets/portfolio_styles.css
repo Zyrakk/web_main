@@ -8,7 +8,7 @@
   --muted: #8d9fbb;
   --shadow: 0 16px 48px rgba(0, 0, 0, 0.5);
 
-  --hue: 210;
+  --hue: 268;
   --sat: 95%;
   --acc: hsl(var(--hue), var(--sat), 65%);
   --acc-2: hsl(calc(var(--hue) + 30), 90%, 65%);
