@@ -381,6 +381,7 @@
           0 12px 40px rgba(0, 0, 0, 0.55);
         transition: transform 0.18s ease, box-shadow 0.18s ease;
         padding: 0; /* for accent line */
+        cursor: grab;
       }
       .card:hover {
         transform: translateY(-4px);
@@ -544,21 +545,6 @@
         background: linear-gradient(90deg, #a7f3d0, #34d399);
       }
 
-      .drag-handle {
-        display: none;
-        align-items: center;
-        gap: 6px;
-        color: var(--muted);
-        font-size: clamp(11px, 3.6vw, 12px);
-        padding: 6px 8px;
-        border: 2px dashed rgba(0, 255, 170, 0.35);
-        background: #06100e;
-        cursor: grab;
-        user-select: none;
-      }
-      .admin-on .drag-handle {
-        display: inline-flex;
-      }
       .dragging {
         opacity: 0.75;
         transform: translateY(-2px) scale(0.997);
@@ -572,6 +558,7 @@
         height: 4px;
         background: linear-gradient(90deg, var(--ui), var(--ui-2), var(--ui-3));
         box-shadow: 0 8px 26px rgba(0, 171, 255, 0.35);
+        z-index: 10;
       }
       .card.drop-before::after {
         top: -2px;
@@ -825,6 +812,43 @@
         cursor: grab;
       }
 
+      /* Checkbox personalizado */
+      .checkbox-wrap {
+        display: flex;
+        align-items: center;
+        gap: 10px;
+        margin-top: 8px;
+      }
+      .checkbox-wrap input[type="checkbox"] {
+        appearance: none;
+        width: 18px;
+        height: 18px;
+        margin: 0;
+        padding: 0;
+        background: #071412;
+        border: 2px solid rgba(255, 107, 0, 0.6);
+        cursor: pointer;
+        position: relative;
+      }
+      .checkbox-wrap input[type="checkbox"]:checked {
+        background: linear-gradient(45deg, var(--focus), #ff9500);
+        border-color: var(--focus);
+        box-shadow: 0 0 15px var(--focus-glow);
+      }
+      .checkbox-wrap input[type="checkbox"]:checked::after {
+        content: "🎯";
+        position: absolute;
+        top: -1px;
+        left: -1px;
+        font-size: 12px;
+        line-height: 1;
+      }
+      .checkbox-wrap label {
+        margin: 0;
+        cursor: pointer;
+        color: var(--focus);
+      }
+
       .countdown {
         font-family: "Press Start 2P", monospace;
         font-size: clamp(9px, 2.6vw, 10px);
@@ -976,6 +1000,12 @@
             </div>
           </div>
 
+          <!-- Checkbox de Focus -->
+          <div class="checkbox-wrap">
+            <input type="checkbox" id="taskFocused" />
+            <label for="taskFocused">Mark as focused task</label>
+          </div>
+
           <div class="modal-actions" style="display: flex; gap: 10px">
             <button class="btn secondary" id="deleteTaskBtn">Delete</button>
             <span style="flex: 1"></span>
@@ -1046,6 +1076,7 @@
         end: document.getElementById("taskEnd"),
         c1: document.getElementById("taskColor1"),
         c2: document.getElementById("taskColor2"),
+        focused: document.getElementById("taskFocused"),
         saveTask: document.getElementById("saveTask"),
         cancelEdit: document.getElementById("cancelEdit"),
         deleteTask: document.getElementById("deleteTaskBtn"),
@@ -1204,12 +1235,6 @@
             d="M19.5 7.5l-.867 12.142A2.25 2.25 0 0116.39 22H7.61a2.25
             2.25 0 01-2.243-2.358L4.5 7.5m3 0V5.25A2.25 2.25 0 019.75 3h4.5A2.25
             2.25 0 0116.5 5.25V7.5m-9 0h11.25M9.75 11.25v6m4.5-6v6"/></svg>`;
-        if (name === "grip")
-        return `<svg class="icon" viewBox="0 0 24 24" fill="currentColor">
-            <rect x="6" y="5" width="3" height="3"/><rect x="6" y="10" width="3" height="3"/>
-            <rect x="6" y="15" width="3" height="3"/><rect x="15" y="5" width="3" height="3"/>
-            <rect x="15" y="10" width="3" height="3"/><rect x="15" y="15" width="3" height="3"/>
-        </svg>`;
         if (name === "focus")
         return `<svg class="icon" viewBox="0 0 24 24" fill="currentColor">
             <path d="M12 2l2.09 6.26L20 10l-5.91 1.74L12 18l-2.09-6.26L4 10l5.91-1.74L12 2z"/>
@@ -1264,11 +1289,6 @@
                 <div class="top">
                     <div class="title">${escapeHtml(t.title)}</div>
                     <div class="meta">
-                    ${
-                        admin
-                        ? `<span class="drag-handle">${icon("grip")}</span>`
-                        : ""
-                    }
                     ${modeChip}
                     ${done ? `<span class="chip done">Completed!</span>` : ""}
                     </div>
@@ -1308,9 +1328,10 @@
         els.grid.querySelectorAll(".card").forEach((card) => {
         const id = card.getAttribute("data-id");
         card.querySelectorAll("[data-action]").forEach((btn) =>
-            btn.addEventListener("click", () =>
-            handleCardAction(id, btn.getAttribute("data-action"))
-            )
+            btn.addEventListener("click", (e) => {
+                e.stopPropagation();
+                handleCardAction(id, btn.getAttribute("data-action"));
+            })
         );
 
         if (isAdmin()) {
@@ -1384,6 +1405,7 @@
         els.end.value = task && task.end ? toLocalInput(task.end) : "";
         els.c1.value = task ? task.c1 : "#00f6a9";
         els.c2.value = task ? task.c2 : "#00a7ff";
+        els.focused.checked = task ? !!task.focused : false;
 
         els.manualGroup.style.display =
         (task ? task.mode : "manual") === "manual" ? "block" : "none";
@@ -1432,6 +1454,7 @@
         const percent = clamp(parseInt(els.percent.value || "0", 10), 0, 100);
         const c1 = els.c1.value.trim() || "#00f6a9";
         const c2 = els.c2.value.trim() || "#00a7ff";
+        const focused = els.focused.checked;
 
         let start = null,
         end = null;
@@ -1456,15 +1479,19 @@
         if (!t) return;
         const prevPct = computePct(t);
 
-        t.title = title;
-        t.desc = desc;
-        t.mode = mode;
-        t.percent = mode === "manual" ? percent : t.percent || 0;
-        t.start = mode === "time" ? start : null;
-        t.end = mode === "time" ? end : null;
-        t.c1 = c1;
-        t.c2 = c2;
-        t.updatedAt = now();
+        // Preserve existing fields and update with new values
+        Object.assign(t, {
+            title,
+            desc,
+            mode,
+            percent: mode === "manual" ? percent : t.percent || 0,
+            start: mode === "time" ? start : null,
+            end: mode === "time" ? end : null,
+            c1,
+            c2,
+            focused,
+            updatedAt: now()
+        });
 
         const newPct = computePct(t);
         if (newPct >= 100 && prevPct < 100) {
@@ -1481,7 +1508,7 @@
             end: mode === "time" ? end : null,
             c1,
             c2,
-            focused: false,
+            focused,
             createdAt: now(),
             updatedAt: now()
         };
