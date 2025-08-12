@@ -1229,6 +1229,14 @@
             d="M19.5 7.5l-.867 12.142A2.25 2.25 0 0116.39 22H7.61a2.25
             2.25 0 01-2.243-2.358L4.5 7.5m3 0V5.25A2.25 2.25 0 019.75 3h4.5A2.25
             2.25 0 0116.5 5.25V7.5m-9 0h11.25M9.75 11.25v6m4.5-6v6"/></svg>`;
+        if (name === "focus")
+        return `<svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <circle cx="12" cy="12" r="3"></circle>
+            <path d="M3 7V5a2 2 0 0 1 2-2h2"></path>
+            <path d="M17 3h2a2 2 0 0 1 2 2v2"></path>
+            <path d="M21 17v2a2 2 0 0 1-2 2h-2"></path>
+            <path d="M7 21H5a2 2 0 0 1-2-2v-2"></path>
+            </svg>`;
         return "";
     }
 
@@ -1633,7 +1641,7 @@
             render();
         }
 
-        // confeti al entrar si ya hay tareas completadas
+        // confeti al entrar si ya hay completadas
         completedIds = computeCompletedIds(tasks);
         confettiOnEntryIfCompleted();
 
