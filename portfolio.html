@@ -111,39 +111,102 @@
     </main>
 
     <section id="projects" class="section projects">
-      <div class="container">
-        <div class="section-head">
-          <h2>// Projects</h2>
-        </div>
-
-        <div class="project-stack">
-          <article class="project-card reveal" data-repo="MiniSec">
-            <div class="card-content">
-              <div class="card-bg" aria-hidden="true"></div>
-              <header class="card-header">
-                <h3>MiniSec</h3>
-                <span class="status live">Live</span>
-              </header>
-              <p id="desc-minisec" class="desc">Loading…</p>
-              <div class="meta">
-                <span id="lang-minisec" class="tag">—</span>
-                <span id="stars-minisec" class="tag">
-                  <i class="fa-regular fa-star"></i> —
-                </span>
-                <span id="upd-minisec" class="tag">Updated: —</span>
-              </div>
+        <div class="container">
+            <div class="section-head">
+                <h2>// Projects</h2>
             </div>
-            <a
-              class="repo-link"
-              href="https://github.com/Zyrakk/MiniSec"
-              target="_blank"
-              rel="noopener"
-              aria-label="View MiniSec on GitHub"
-            >
-              <i class="fab fa-github"></i>
-              <span>Repository</span>
-            </a>
-          </article>
+
+            <div class="project-stack">
+                <!-- Storage -->
+                <article class="project-card reveal">
+                    <div class="card-content">
+                        <div class="card-bg" aria-hidden="true"></div>
+                        <header class="card-header">
+                            <h3>Storage</h3>
+                            <span class="status live">Live</span>
+                        </header>
+                        <p class="desc">
+                            Almacenamiento y compartición de archivos con enlaces
+                            presignados. Seguro y simple, respaldado por S3/MinIO.
+                        </p>
+                        <div class="meta">
+                            <span class="tag">Web App</span>
+                            <span class="tag">S3/MinIO</span>
+                            <span class="tag">Nginx</span>
+                            <span class="tag">TLS</span>
+                        </div>
+                    </div>
+                    <a
+                        class="repo-link"
+                        href="https://storage.zyrak.cloud/"
+                        target="_blank"
+                        rel="noopener"
+                        aria-label="Visitar Storage"
+                    >
+                        <i class="fa-solid fa-arrow-up-right-from-square"></i>
+                        <span>Visitar</span>
+                    </a>
+                </article>
+
+                <!-- Z-Task -->
+                <article class="project-card reveal">
+                    <div class="card-content">
+                        <div class="card-bg" aria-hidden="true"></div>
+                        <header class="card-header">
+                            <h3>Z-Task</h3>
+                            <span class="status live">Live</span>
+                        </header>
+                        <p class="desc">
+                            Gestor de tareas/kanban con autenticación y API. Enfoque en
+                            simplicidad, rapidez y automatización CI/CD.
+                        </p>
+                        <div class="meta">
+                            <span class="tag">Web App</span>
+                            <span class="tag">Docker</span>
+                            <span class="tag">CI/CD</span>
+                            <span class="tag">Nginx</span>
+                        </div>
+                    </div>
+                    <a
+                        class="repo-link"
+                        href="https://task.zyrak.cloud/"
+                        target="_blank"
+                        rel="noopener"
+                        aria-label="Visitar Z-Task"
+                    >
+                        <i class="fa-solid fa-arrow-up-right-from-square"></i>
+                        <span>Visitar</span>
+                    </a>
+                </article>
+
+                <!-- Ransom.chat (Próximamente) -->
+                <article class="project-card reveal">
+                    <div class="card-content">
+                        <div class="card-bg" aria-hidden="true"></div>
+                        <header class="card-header">
+                            <h3>Ransom.chat</h3>
+                            <span class="status wip">
+                            <i class="fa-solid fa-lock"></i> Próximamente
+                            </span>
+                        </header>
+                        <p class="desc">
+                            Plataforma orientada a concienciación y simulación de
+                            seguridad. Lanzamiento en breve.
+                        </p>
+                        <div class="meta">
+                            <span class="tag">Private</span>
+                            <span class="tag">Security</span>
+                            <span class="tag">Design Phase</span>
+                        </div>
+                    </div>
+                        <div class="repo-link disabled" aria-disabled="true">
+                        <i class="fa-solid fa-lock"></i>
+                        <span>Bloqueado</span>
+                    </div>
+                </article>
+            </div>
+        </div>
+        </section>
 
           <article class="project-card reveal" data-repo="video_server">
             <div class="card-content">
