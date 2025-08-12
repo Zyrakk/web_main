@@ -657,6 +657,14 @@
       .icon-btn:hover {
         transform: translateY(-2px);
       }
+      .icon-btn.focus-btn {
+        border-color: var(--focus);
+        background: linear-gradient(45deg, var(--focus), #ff9500);
+        color: #000;
+      }
+      .icon-btn.focus-btn.active {
+        box-shadow: 0 0 20px var(--focus-glow);
+      }
       .icon {
         width: 14px;
         height: 14px;
@@ -1306,6 +1314,9 @@
                 ${cdHtml}
 
                 <div class="card-actions admin-only">
+                    <button class="icon-btn focus-btn ${focused ? 'active' : ''}" data-action="focus" title="Toggle Focus">
+                        ${icon("focus")}
+                    </button>
                     <button class="icon-btn" data-action="edit">
                     ${icon("edit")}&nbsp;Edit
                     </button>
@@ -1426,6 +1437,11 @@
                 render();
                 saveAll("Task deleted");
             }
+        } else if (action === "focus") {
+            t.focused = !t.focused;
+            t.updatedAt = now();
+            render();
+            saveAll(t.focused ? "Task focused" : "Task unfocused");
         }
     }
 
@@ -1641,7 +1657,7 @@
             render();
         }
 
-        // confeti al entrar si ya hay completadas
+        // confeti al entrar si ya hay tareas completadas
         completedIds = computeCompletedIds(tasks);
         confettiOnEntryIfCompleted();
 
