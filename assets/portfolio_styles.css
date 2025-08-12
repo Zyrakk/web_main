@@ -198,7 +198,8 @@ body {
   border: 1px solid var(--acc-dim);
   text-decoration: none;
   color: var(--text);
-  transition: transform 0.12s ease, background 0.2s ease, box-shadow 0.2s;
+  transition: transform 0.12s ease, background 0.2s ease,
+    box-shadow 0.2s;
   box-shadow: var(--shadow);
 }
 .btn-primary {
@@ -215,8 +216,8 @@ body {
 .project-stack {
   display: grid;
   gap: 2rem;
-  max-width: 840px; /* <-- Cards are now narrower */
-  margin-inline: auto; /* <-- And centered */
+  max-width: 840px;
+  margin-inline: auto;
 }
 .project-card {
   display: grid;
@@ -417,13 +418,11 @@ body {
   color: var(--text);
 }
 
-/* Mantener el header siempre visible, por si alguna clase intenta ocultarlo */
+/* Keep header always visible */
 .header {
   transform: translateY(0) !important;
   opacity: 1 !important;
 }
-
-/* Neutraliza posibles clases de ocultación si alguna lógica externa las aplica */
 .header.hide,
 .header.is-hidden,
 .header--hidden {
@@ -433,12 +432,12 @@ body {
   pointer-events: auto !important;
 }
 
-/* Evita que al navegar por anclas el contenido quede oculto bajo el header */
+/* Anchor offset so content isn't hidden under the header */
 html {
-  scroll-padding-top: 72px; /* ajusta si tu header mide distinto */
+  scroll-padding-top: 72px;
 }
 
-/* Responsive */
+/* Utilities and responsive */
 @media (max-width: 768px) {
   .menu-toggle {
     display: inline-flex;
@@ -467,7 +466,6 @@ html {
   }
 }
 
-/* Utilities */
 .skip-link {
   position: absolute;
   inset: 0 auto auto 0;
@@ -504,59 +502,57 @@ html {
   }
 }
 
-/* Ransom.chat lock overlay: fuerza el stacking para que siempre se vea */
+/* ===========================
+   Ransom.chat lock overlay
+   =========================== */
 .project-card.locked {
   position: relative;
   overflow: hidden;
 }
 
+/* Base layers stay under the overlay */
 .project-card.locked .card-content,
 .project-card.locked .repo-link {
-  position: relative; /* crea capa base */
+  position: relative;
   z-index: 1;
 }
 
+/* Overlay hidden by default; shown only on hover */
 .project-card.locked .locked-overlay {
   position: absolute;
   inset: 0;
   display: grid;
   place-items: center;
   opacity: 0;
+  visibility: hidden;
   pointer-events: none;
-  transition: opacity 0.25s ease;
-  z-index: 5; /* por encima del contenido */
-  background: rgba(10, 15, 24, 0.45);
-  -webkit-backdrop-filter: blur(3px); /* Safari */
+  transition: opacity 0.24s ease, visibility 0.24s ease;
+  z-index: 5;
+  background: rgba(10, 15, 24, 0.35);
+  -webkit-backdrop-filter: blur(3px);
   backdrop-filter: blur(3px);
 }
 
-.project-card.locked .locked-overlay i {
-  font-size: 3rem;
-  color: var(--acc);
-  text-shadow: 0 0 24px color-mix(in oklab, var(--acc), transparent 60%);
-}
-
-.project-card.locked:hover .locked-overlay,
-.project-card.locked:focus-within .locked-overlay {
+/* Show overlay only on hover */
+.project-card.locked:hover .locked-overlay {
   opacity: 1;
+  visibility: visible;
 }
 
+/* Subtle blur/dim of the rest of the card when overlay is visible */
 .project-card.locked:hover .card-content,
 .project-card.locked:hover .repo-link {
-  filter: blur(2px) brightness(0.75);
-  transition: filter 0.25s ease;
+  filter: blur(1.5px) brightness(0.85);
 }
 
-/* Tamaño y color del candado SVG en el overlay */
+/* Lock SVG sizing and accent color */
 .project-card.locked .locked-overlay .lock-svg {
-  width: 64px;
-  height: 64px;
+  width: 56px;
+  height: 56px;
   filter: drop-shadow(
     0 0 24px color-mix(in oklab, var(--acc), transparent 60%)
   );
 }
-
-/* Fuerza el color al de acento (sobrescribe stroke del SVG) */
 .project-card.locked .locked-overlay .lock-svg path {
   stroke: var(--acc);
 }
