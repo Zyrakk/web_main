@@ -6,7 +6,7 @@
       name="viewport"
       content="width=device-width, initial-scale=1, viewport-fit=cover"
     />
-    <link rel="icon" href="/sources/favicon_task.ico" type="image/x-icon">
+    <link rel="icon" href="/sources/favicon_task.ico" type="image/x-icon" />
     <title>Z - Tasks</title>
 
     <link
@@ -29,7 +29,7 @@
         --muted: #86e8c9;
         --focus: #ff6b00;
         --focus-glow: rgba(255, 107, 0, 0.6);
-        --px: 8px; /* pixel corner */
+        --px: 8px;
         --pad: clamp(14px, 4vw, 24px);
         --gap: clamp(10px, 3.2vw, 16px);
       }
@@ -61,8 +61,16 @@
         position: fixed;
         inset: 0;
         z-index: 0;
-        background: radial-gradient(1200px 700px at 50% -10%, #072c2a 0%, transparent 60%),
-          radial-gradient(1200px 900px at 120% 120%, #140a24 0%, transparent 50%);
+        background: radial-gradient(
+            1200px 700px at 50% -10%,
+            #072c2a 0%,
+            transparent 60%
+          ),
+          radial-gradient(
+            1200px 900px at 120% 120%,
+            #140a24 0%,
+            transparent 50%
+          );
       }
       .grid3d::before,
       .grid3d::after {
@@ -87,7 +95,8 @@
       }
       .grid3d::after {
         opacity: 0.35;
-        transform: translateX(-50%) perspective(880px) rotateX(66deg) translateY(22px);
+        transform: translateX(-50%) perspective(880px) rotateX(66deg)
+          translateY(22px);
       }
 
       /* CRT scanlines */
@@ -138,7 +147,11 @@
         gap: 12px;
         margin: 0 0 calc(var(--gap) + 4px) 0;
         padding: 10px 0;
-        background: linear-gradient(180deg, rgba(5, 12, 11, 0.9), rgba(5, 9, 10, 0.6));
+        background: linear-gradient(
+          180deg,
+          rgba(5, 12, 11, 0.9),
+          rgba(5, 9, 10, 0.6)
+        );
         backdrop-filter: blur(2px);
         border-bottom: 2px solid rgba(0, 255, 170, 0.2);
       }
@@ -160,21 +173,31 @@
         height: clamp(40px, 10vw, 52px);
         display: grid;
         place-items: center;
-        background: linear-gradient(45deg, 
-          #ff0080 0%, 
-          #ff6b00 25%, 
-          #00f6a9 50%, 
-          #00a7ff 75%, 
-          #a855f7 100%);
+        background: linear-gradient(
+          45deg,
+          #ff0080 0%,
+          #ff6b00 25%,
+          #00f6a9 50%,
+          #00a7ff 75%,
+          #a855f7 100%
+        );
         background-size: 400% 400%;
         clip-path: polygon(
-          20% 0%, 80% 0%, 100% 20%, 100% 80%, 80% 100%, 20% 100%, 0% 80%, 0% 20%
+          20% 0%,
+          80% 0%,
+          100% 20%,
+          100% 80%,
+          80% 100%,
+          20% 100%,
+          0% 80%,
+          0% 20%
         );
-        box-shadow: 
+        box-shadow:
           0 0 30px rgba(0, 255, 170, 0.6),
           0 0 60px rgba(255, 107, 0, 0.3),
           inset 0 0 20px rgba(255, 255, 255, 0.2);
-        animation: logoGlow 8s ease-in-out infinite, gradientShift 6s ease-in-out infinite;
+        animation: logoGlow 8s ease-in-out infinite,
+          gradientShift 6s ease-in-out infinite;
         position: relative;
         overflow: hidden;
       }
@@ -182,9 +205,20 @@
         content: "";
         position: absolute;
         inset: 3px;
-        background: radial-gradient(circle at 30% 30%, rgba(255,255,255,0.8) 0%, transparent 40%);
+        background: radial-gradient(
+          circle at 30% 30%,
+          rgba(255, 255, 255, 0.8) 0%,
+          transparent 40%
+        );
         clip-path: polygon(
-          20% 0%, 80% 0%, 100% 20%, 100% 80%, 80% 100%, 20% 100%, 0% 80%, 0% 20%
+          20% 0%,
+          80% 0%,
+          100% 20%,
+          100% 80%,
+          80% 100%,
+          20% 100%,
+          0% 80%,
+          0% 20%
         );
       }
       .logo::after {
@@ -195,27 +229,28 @@
         font-size: clamp(18px, 4.5vw, 26px);
         color: #000;
         font-weight: bold;
-        text-shadow: 
-          1px 1px 0px rgba(255,255,255,0.8),
-          0 0 10px rgba(0,0,0,0.5);
+        text-shadow:
+          1px 1px 0px rgba(255, 255, 255, 0.8),
+          0 0 10px rgba(0, 0, 0, 0.5);
       }
-      
+
       @keyframes logoGlow {
-        0%, 100% {
-          box-shadow: 
+        0%,
+        100% {
+          box-shadow:
             0 0 30px rgba(0, 255, 170, 0.6),
             0 0 60px rgba(255, 107, 0, 0.3),
             inset 0 0 20px rgba(255, 255, 255, 0.2);
         }
         50% {
-          box-shadow: 
+          box-shadow:
             0 0 40px rgba(0, 255, 170, 0.8),
             0 0 80px rgba(255, 107, 0, 0.5),
             0 0 120px rgba(168, 85, 247, 0.3),
             inset 0 0 30px rgba(255, 255, 255, 0.3);
         }
       }
-      
+
       @keyframes gradientShift {
         0% {
           background-position: 0% 50%;
@@ -227,19 +262,21 @@
           background-position: 0% 50%;
         }
       }
-      
+
       h1 {
         margin: 0;
         font-family: "Press Start 2P", system-ui, monospace;
         font-size: clamp(18px, 4.5vw, 32px);
         letter-spacing: 2px;
-        background: linear-gradient(135deg, 
-          #ff0080 0%, 
+        background: linear-gradient(
+          135deg,
+          #ff0080 0%,
           #ff6b00 20%,
-          #00f6a9 40%, 
-          #00a7ff 60%, 
+          #00f6a9 40%,
+          #00a7ff 60%,
           #a855f7 80%,
-          #ff0080 100%);
+          #ff0080 100%
+        );
         background-size: 300% 300%;
         -webkit-background-clip: text;
         background-clip: text;
@@ -248,34 +285,39 @@
         text-shadow: 0 0 30px rgba(0, 255, 170, 0.5);
         position: relative;
       }
-      
+
       h1::before {
         content: "Z - TASKS";
         position: absolute;
         top: 0;
         left: 0;
-        background: linear-gradient(135deg, 
-          rgba(255, 255, 255, 0.9) 0%, 
-          rgba(0, 246, 169, 0.8) 50%, 
-          rgba(255, 255, 255, 0.9) 100%);
+        background: linear-gradient(
+          135deg,
+          rgba(255, 255, 255, 0.9) 0%,
+          rgba(0, 246, 169, 0.8) 50%,
+          rgba(255, 255, 255, 0.9) 100%
+        );
         -webkit-background-clip: text;
         background-clip: text;
         color: transparent;
         opacity: 0;
         animation: textGlow 6s ease-in-out infinite;
       }
-      
+
       @keyframes textShimmer {
-        0%, 100% {
+        0%,
+        100% {
           background-position: 0% 50%;
         }
         50% {
           background-position: 100% 50%;
         }
       }
-      
+
       @keyframes textGlow {
-        0%, 80%, 100% {
+        0%,
+        80%,
+        100% {
           opacity: 0;
         }
         90% {
@@ -303,7 +345,8 @@
         background-size: 200% 100%;
         animation: sheen 9s ease-in-out infinite;
         cursor: pointer;
-        box-shadow: 0 0 0 2px rgba(0, 255, 170, 0.45),
+        box-shadow:
+          0 0 0 2px rgba(0, 255, 170, 0.45),
           0 8px 24px rgba(0, 171, 255, 0.24);
         clip-path: polygon(
           0 var(--px),
@@ -377,35 +420,40 @@
           var(--px) calc(100% - var(--px)),
           0 calc(100% - var(--px))
         );
-        box-shadow: 0 0 0 2px rgba(0, 255, 170, 0.08) inset,
+        box-shadow:
+          0 0 0 2px rgba(0, 255, 170, 0.08) inset,
           0 12px 40px rgba(0, 0, 0, 0.55);
         transition: transform 0.18s ease, box-shadow 0.18s ease;
-        padding: 0; /* for accent line */
+        padding: 0;
       }
       .admin-on .card {
         cursor: grab;
       }
       .card:hover {
         transform: translateY(-4px);
-        box-shadow: 0 0 0 2px rgba(0, 255, 170, 0.14) inset,
+        box-shadow:
+          0 0 0 2px rgba(0, 255, 170, 0.14) inset,
           0 18px 60px rgba(0, 0, 0, 0.7);
       }
       .card::before {
-        /* subtle color accent per task */
         content: "";
         position: absolute;
         left: -2px;
         right: -2px;
         top: -2px;
         height: 4px;
-        background: linear-gradient(90deg, var(--c1, var(--ui)), var(--c2, var(--ui-2)));
+        background: linear-gradient(
+          90deg,
+          var(--c1, var(--ui)),
+          var(--c2, var(--ui-2))
+        );
         opacity: 0.9;
       }
-      
+
       /* Focus effect */
       .card.focused {
         border: 3px solid var(--focus);
-        box-shadow: 
+        box-shadow:
           0 0 0 2px var(--focus-glow) inset,
           0 0 30px var(--focus-glow),
           0 0 60px rgba(255, 107, 0, 0.4),
@@ -417,8 +465,10 @@
         height: 6px;
         animation: focusGlow 2s ease-in-out infinite;
       }
+
+      /* Viewer: spectacular focus ribbon */
       .card.focused::after {
-        content: "🎯 FOCUS";
+        content: "★ FOCUS";
         position: absolute;
         top: 8px;
         right: 8px;
@@ -428,33 +478,117 @@
         font-size: 8px;
         padding: 4px 6px;
         clip-path: polygon(
-          0 2px, 2px 2px, 2px 0, calc(100% - 2px) 0, calc(100% - 2px) 2px,
-          100% 2px, 100% calc(100% - 2px), calc(100% - 2px) calc(100% - 2px),
-          calc(100% - 2px) 100%, 2px 100%, 2px calc(100% - 2px), 0 calc(100% - 2px)
+          0 2px,
+          2px 2px,
+          2px 0,
+          calc(100% - 2px) 0,
+          calc(100% - 2px) 2px,
+          100% 2px,
+          100% calc(100% - 2px),
+          calc(100% - 2px) calc(100% - 2px),
+          calc(100% - 2px) 100%,
+          2px 100%,
+          2px calc(100% - 2px),
+          0 calc(100% - 2px)
         );
         box-shadow: 0 0 15px var(--focus-glow);
-        animation: focusLabel 2s ease-in-out infinite;
+        animation: focusLabel 1.8s ease-in-out infinite;
+        z-index: 2;
       }
-      
+
+      /* Viewer: pixel sparkles around content when focused */
+      .card .inner {
+        padding: 14px 14px 16px 14px;
+        display: flex;
+        flex-direction: column;
+        gap: 10px;
+        position: relative;
+      }
+      .card.focused .inner::after {
+        content: "";
+        position: absolute;
+        inset: 2px;
+        pointer-events: none;
+        background-image:
+          radial-gradient(
+            2px 2px at 12% 22%,
+            rgba(255, 255, 255, 0.7) 60%,
+            transparent 62%
+          ),
+          radial-gradient(
+            2px 2px at 82% 32%,
+            rgba(255, 255, 255, 0.55) 60%,
+            transparent 62%
+          ),
+          radial-gradient(
+            2px 2px at 28% 74%,
+            rgba(255, 255, 255, 0.6) 60%,
+            transparent 62%
+          ),
+          radial-gradient(
+            2px 2px at 62% 54%,
+            rgba(255, 255, 255, 0.65) 60%,
+            transparent 62%
+          ),
+          radial-gradient(
+            2px 2px at 44% 18%,
+            rgba(255, 255, 255, 0.4) 60%,
+            transparent 62%
+          );
+        animation: sparkle 1.6s steps(2, end) infinite;
+        opacity: 0.8;
+        filter: drop-shadow(0 0 6px rgba(255, 107, 0, 0.65));
+      }
+      @keyframes sparkle {
+        0% {
+          transform: translate(0, 0);
+          opacity: 0.7;
+        }
+        50% {
+          transform: translate(1px, -1px);
+          opacity: 1;
+        }
+        100% {
+          transform: translate(0, 0);
+          opacity: 0.7;
+        }
+      }
+
+      /* Admin view: cleaner focus (no ribbon or sparkles), show chip instead */
+      .admin-on .card.focused {
+        box-shadow:
+          0 0 0 2px rgba(255, 107, 0, 0.35) inset,
+          0 0 18px rgba(255, 107, 0, 0.35);
+        animation: none;
+      }
+      .admin-on .card.focused::after {
+        display: none;
+      }
+      .admin-on .card.focused .inner::after {
+        display: none;
+      }
+
       @keyframes focusPulse {
-        0%, 100% {
-          box-shadow: 
+        0%,
+        100% {
+          box-shadow:
             0 0 0 2px var(--focus-glow) inset,
             0 0 30px var(--focus-glow),
             0 0 60px rgba(255, 107, 0, 0.4),
             0 18px 60px rgba(0, 0, 0, 0.7);
         }
         50% {
-          box-shadow: 
+          box-shadow:
             0 0 0 3px var(--focus-glow) inset,
-            0 0 40px var(--focus-glow),
-            0 0 80px rgba(255, 107, 0, 0.6),
+            0 0 44px var(--focus-glow),
+            0 0 90px rgba(255, 107, 0, 0.55),
             0 18px 60px rgba(0, 0, 0, 0.7);
         }
       }
-      
+
       @keyframes focusGlow {
-        0%, 100% {
+        0%,
+        100% {
           opacity: 0.9;
           box-shadow: 0 0 20px var(--focus-glow);
         }
@@ -463,24 +597,19 @@
           box-shadow: 0 0 30px var(--focus-glow);
         }
       }
-      
+
       @keyframes focusLabel {
-        0%, 100% {
+        0%,
+        100% {
           transform: scale(1);
           box-shadow: 0 0 15px var(--focus-glow);
         }
         50% {
-          transform: scale(1.05);
-          box-shadow: 0 0 25px var(--focus-glow);
+          transform: scale(1.06);
+          box-shadow: 0 0 26px var(--focus-glow);
         }
       }
-      
-      .card .inner {
-        padding: 14px 14px 16px 14px;
-        display: flex;
-        flex-direction: column;
-        gap: 10px;
-      }
+
       @media (max-width: 680px) {
         .card {
           grid-column: span 1;
@@ -518,6 +647,8 @@
         align-items: center;
         gap: 8px;
         flex-wrap: wrap;
+        z-index: 1;
+        position: relative;
       }
       .chip {
         font-family: "Press Start 2P", monospace;
@@ -545,6 +676,11 @@
       }
       .chip.done {
         background: linear-gradient(90deg, #a7f3d0, #34d399);
+      }
+      .chip.focus {
+        background: linear-gradient(90deg, var(--focus), #ff9500);
+        color: #000;
+        box-shadow: 0 0 12px var(--focus-glow);
       }
 
       .dragging {
@@ -606,6 +742,18 @@
         box-shadow: 0 0 16px rgba(0, 255, 170, 0.35);
         transition: width 0.6s cubic-bezier(0.22, 1, 0.36, 1);
       }
+      /* Viewer: boost progress aura when focused */
+      .card.focused .progress {
+        border-color: rgba(255, 107, 0, 0.6);
+        box-shadow: 0 0 14px rgba(255, 107, 0, 0.35) inset;
+      }
+      .card.focused .progress-fill {
+        box-shadow:
+          0 0 22px rgba(255, 107, 0, 0.55),
+          0 0 10px rgba(255, 149, 0, 0.35) inset;
+        filter: saturate(1.2) contrast(1.05);
+      }
+
       @keyframes pixflow {
         from {
           background-position: 0 0, 0 0;
@@ -652,7 +800,7 @@
           var(--px) calc(100% - var(--px)),
           0 calc(100% - var(--px))
         );
-        transition: transform 0.15s ease;
+        transition: transform 0.15s ease, box-shadow 0.15s ease;
       }
       .icon-btn:hover {
         transform: translateY(-2px);
@@ -661,6 +809,7 @@
         border-color: var(--focus);
         background: linear-gradient(45deg, var(--focus), #ff9500);
         color: #000;
+        box-shadow: 0 0 12px var(--focus-glow);
       }
       .icon-btn.focus-btn.active {
         box-shadow: 0 0 20px var(--focus-glow);
@@ -668,6 +817,7 @@
       .icon {
         width: 14px;
         height: 14px;
+        display: inline-block;
       }
 
       .fab {
@@ -684,7 +834,8 @@
         padding: 14px 16px;
         background: linear-gradient(90deg, var(--ui), var(--ui-2), var(--ui-3));
         cursor: pointer;
-        box-shadow: 0 0 0 2px rgba(0, 255, 170, 0.45),
+        box-shadow:
+          0 0 0 2px rgba(0, 255, 170, 0.45),
           0 10px 30px rgba(0, 171, 255, 0.24),
           0 0 100px rgba(0, 255, 170, 0.25);
         clip-path: polygon(
@@ -701,12 +852,6 @@
           var(--px) calc(100% - var(--px)),
           0 calc(100% - var(--px))
         );
-      }
-      .fab .hint {
-        color: var(--muted);
-        font-size: 14px;
-        margin-top: 6px;
-        text-align: right;
       }
 
       /* Modal */
@@ -742,7 +887,8 @@
           var(--px) calc(100% - var(--px)),
           0 calc(100% - var(--px))
         );
-        box-shadow: 0 0 0 3px rgba(0, 255, 170, 0.12) inset,
+        box-shadow:
+          0 0 0 3px rgba(0, 255, 170, 0.12) inset,
           0 20px 60px rgba(0, 0, 0, 0.6);
         padding: 16px;
       }
@@ -812,43 +958,6 @@
         background: var(--ui);
         border: 2px solid #06261e;
         cursor: grab;
-      }
-
-      /* Checkbox personalizado */
-      .checkbox-wrap {
-        display: flex;
-        align-items: center;
-        gap: 10px;
-        margin-top: 8px;
-      }
-      .checkbox-wrap input[type="checkbox"] {
-        appearance: none;
-        width: 18px;
-        height: 18px;
-        margin: 0;
-        padding: 0;
-        background: #071412;
-        border: 2px solid rgba(255, 107, 0, 0.6);
-        cursor: pointer;
-        position: relative;
-      }
-      .checkbox-wrap input[type="checkbox"]:checked {
-        background: linear-gradient(45deg, var(--focus), #ff9500);
-        border-color: var(--focus);
-        box-shadow: 0 0 15px var(--focus-glow);
-      }
-      .checkbox-wrap input[type="checkbox"]:checked::after {
-        content: "🎯";
-        position: absolute;
-        top: -1px;
-        left: -1px;
-        font-size: 12px;
-        line-height: 1;
-      }
-      .checkbox-wrap label {
-        margin: 0;
-        cursor: pointer;
-        color: var(--focus);
       }
 
       .countdown {
@@ -927,7 +1036,6 @@
 
       <div class="fab admin-only">
         <button id="addTaskBtn">+ New task</button>
-        <div class="hint">Drag to reorder</div>
       </div>
     </div>
 
@@ -952,10 +1060,7 @@
 
           <div>
             <label>Description</label>
-            <textarea
-              id="taskDesc"
-              placeholder="Notes, details…"
-            ></textarea>
+            <textarea id="taskDesc" placeholder="Notes, details…"></textarea>
           </div>
 
           <div id="manualGroup">
@@ -1002,12 +1107,6 @@
             </div>
           </div>
 
-          <!-- Checkbox de Focus -->
-          <div class="checkbox-wrap">
-            <input type="checkbox" id="taskFocused" />
-            <label for="taskFocused">Mark as focused task</label>
-          </div>
-
           <div class="modal-actions" style="display: flex; gap: 10px">
             <button class="btn secondary" id="deleteTaskBtn">Delete</button>
             <span style="flex: 1"></span>
@@ -1018,52 +1117,58 @@
       </div>
     </div>
 
-    <div class="toast" id="toast"></div>
+    <div
+      class="toast"
+      id="toast"
+      role="status"
+      aria-live="polite"
+      aria-atomic="true"
+    ></div>
 
     <script>
-    // To‑Do Pulse — Pixel Edition (Realtime via WebSocket + API)
-    // - Reads: GET /api/tasks (public)
-    // - Writes: POST /api/save (Basic Auth required by NGINX)
-    // - Realtime: wss://host/ws broadcasts updates
+      // To‑Do Pulse — Pixel Edition (Realtime via WebSocket + API)
+      // - Reads: GET /api/tasks (public)
+      // - Writes: POST /api/save (Basic Auth required by NGINX)
+      // - Realtime: wss://host/ws broadcasts updates
 
-    const ADMIN_MODE = location.pathname.startsWith("/admin");
-    const isAdmin = () => ADMIN_MODE;
+      const ADMIN_MODE = location.pathname.startsWith("/admin");
+      const isAdmin = () => ADMIN_MODE;
 
-    let tasks = [];
-    let editingId = null;
-    let draggingId = null;
-    let serverVersion = 0;
-    let ws = null;
-    let reconnectDelay = 1000;
+      let tasks = [];
+      let editingId = null;
+      let draggingId = null;
+      let serverVersion = 0;
+      let ws = null;
+      let reconnectDelay = 1000;
 
-    // Confetti on entry + detection of new completions
-    let initialConfettiShown = false;
-    let completedIds = new Set();
+      // Confetti on entry + detection of new completions
+      let initialConfettiShown = false;
+      let completedIds = new Set();
 
-    const computeCompletedIds = (list) =>
-    new Set(
-        (list || [])
-        .filter((t) => computePct(t) >= 100)
-        .map((t) => t.id)
-        .filter(Boolean)
-    );
+      const computeCompletedIds = (list) =>
+        new Set(
+          (list || [])
+            .filter((t) => computePct(t) >= 100)
+            .map((t) => t.id)
+            .filter(Boolean)
+        );
 
-    const hasNewCompletion = (prevSet, nextSet) => {
-    for (const id of nextSet) {
-        if (!prevSet.has(id)) return true;
-    }
-    return false;
-    };
+      const hasNewCompletion = (prevSet, nextSet) => {
+        for (const id of nextSet) {
+          if (!prevSet.has(id)) return true;
+        }
+        return false;
+      };
 
-    const confettiOnEntryIfCompleted = () => {
-    if (initialConfettiShown) return;
-    if (tasks.some((t) => computePct(t) >= 100)) {
-        initialConfettiShown = true;
-        Confetti.celebrate(); // solo confeti (sin toast)
-    }
-    };
+      const confettiOnEntryIfCompleted = () => {
+        if (initialConfettiShown) return;
+        if (tasks.some((t) => computePct(t) >= 100)) {
+          initialConfettiShown = true;
+          Confetti.celebrate(); // solo confeti (sin toast)
+        }
+      };
 
-    const els = {
+      const els = {
         grid: document.getElementById("taskGrid"),
         editModal: document.getElementById("editModal"),
         editorTitle: document.getElementById("editorTitle"),
@@ -1078,71 +1183,73 @@
         end: document.getElementById("taskEnd"),
         c1: document.getElementById("taskColor1"),
         c2: document.getElementById("taskColor2"),
-        focused: document.getElementById("taskFocused"),
         saveTask: document.getElementById("saveTask"),
         cancelEdit: document.getElementById("cancelEdit"),
         deleteTask: document.getElementById("deleteTaskBtn"),
         addTaskBtn: document.getElementById("addTaskBtn"),
         toast: document.getElementById("toast"),
         confetti: document.getElementById("confettiCanvas")
-    };
+      };
 
-    const fmtPct = (n) => `${Math.round(n)}%`;
-    const clamp = (n, a, b) => Math.max(a, Math.min(b, n));
-    const now = () => new Date().getTime();
-    const uid = () =>
+      const fmtPct = (n) => `${Math.round(n)}%`;
+      const clamp = (n, a, b) => Math.max(a, Math.min(b, n));
+      const now = () => new Date().getTime();
+      const uid = () =>
         Math.random().toString(36).slice(2) + Date.now().toString(36);
 
-    const showToast = (msg) => {
+      const showToast = (msg) => {
         els.toast.textContent = msg;
         els.toast.classList.add("show");
         setTimeout(() => els.toast.classList.remove("show"), 1800);
-    };
+      };
 
-    // API
-    const API = {
+      // API
+      const API = {
         async fetch() {
-        const r = await fetch("/api/tasks", { cache: "no-store" });
-        if (!r.ok) throw new Error("fetch failed");
-        const data = await r.json();
-        return data;
+          const r = await fetch("/api/tasks", { cache: "no-store" });
+          if (!r.ok) throw new Error("fetch failed");
+          const data = await r.json();
+          return data;
         },
         async save(allTasks) {
-        const r = await fetch("/api/save", {
+          const r = await fetch("/api/save", {
             method: "POST",
             headers: { "Content-Type": "application/json" },
             body: JSON.stringify({ tasks: allTasks })
-        });
-        if (!r.ok) throw new Error("save failed");
-        return r.json();
+          });
+          if (!r.ok) throw new Error("save failed");
+          return r.json();
         }
-    };
+      };
 
-    // Realtime WS
-    function connectWS() {
+      // Realtime WS
+      function connectWS() {
         try {
-            const proto = location.protocol === "https:" ? "wss" : "ws";
-            ws = new WebSocket(`${proto}://${location.host}/ws`);
+          const proto = location.protocol === "https:" ? "wss" : "ws";
+          ws = new WebSocket(`${proto}://${location.host}/ws`);
 
-            ws.onopen = () => {
+          ws.onopen = () => {
             reconnectDelay = 1000;
-            };
+          };
 
-            ws.onmessage = (ev) => {
+          ws.onmessage = (ev) => {
             try {
-                const msg = JSON.parse(ev.data);
-                if (!msg) return;
+              const msg = JSON.parse(ev.data);
+              if (!msg) return;
 
-                // Guarda el estado de completadas antes de aplicar el nuevo estado
-                const prevCompleted = new Set(completedIds);
+              const prevCompleted = new Set(completedIds);
 
-                if (msg.type === "init" || msg.type === "set") {
-                if (msg.type === "set" && msg.version && msg.version <= serverVersion) {
-                    return; // evita versiones antiguas
+              if (msg.type === "init" || msg.type === "set") {
+                if (
+                  msg.type === "set" &&
+                  msg.version &&
+                  msg.version <= serverVersion
+                ) {
+                  return; // evita versiones antiguas
                 }
 
                 serverVersion =
-                    msg.type === "set"
+                  msg.type === "set"
                     ? msg.version || serverVersion + 1
                     : msg.version || serverVersion;
 
@@ -1152,38 +1259,36 @@
                 const nextCompleted = computeCompletedIds(tasks);
 
                 if (msg.type === "init") {
-                    // Confeti al entrar si ya hay completadas
-                    completedIds = nextCompleted;
-                    confettiOnEntryIfCompleted();
+                  completedIds = nextCompleted;
+                  confettiOnEntryIfCompleted();
                 } else if (msg.type === "set") {
-                    // Confeti si aparecen nuevas completadas en tiempo real
-                    if (hasNewCompletion(prevCompleted, nextCompleted)) {
+                  if (hasNewCompletion(prevCompleted, nextCompleted)) {
                     Confetti.celebrate();
-                    }
-                    completedIds = nextCompleted;
+                  }
+                  completedIds = nextCompleted;
                 }
-                }
+              }
             } catch {
-                /* noop */
+              /* noop */
             }
-            };
+          };
 
-            ws.onclose = () => {
+          ws.onclose = () => {
             setTimeout(connectWS, reconnectDelay);
             reconnectDelay = Math.min(reconnectDelay * 2, 15000);
-            };
-            ws.onerror = () => {
+          };
+          ws.onerror = () => {
             try {
-                ws.close();
+              ws.close();
             } catch {}
-            };
+          };
         } catch {
-            setTimeout(connectWS, reconnectDelay);
+          setTimeout(connectWS, reconnectDelay);
         }
-    }
+      }
 
-    // Compute progress/time
-    const computePct = (t) => {
+      // Compute progress/time
+      const computePct = (t) => {
         if (t.mode !== "time") return clamp(t.percent ?? 0, 0, 100);
         if (!t.start || !t.end) return 0;
         const s = new Date(t.start).getTime();
@@ -1192,8 +1297,8 @@
         if (e <= s) return 100;
         const p = ((n - s) / (e - s)) * 100;
         return clamp(p, 0, 100);
-    };
-    const fmtCountdown = (t) => {
+      };
+      const fmtCountdown = (t) => {
         const s = t.start ? new Date(t.start).getTime() : null;
         const e = t.end ? new Date(t.end).getTime() : null;
         const n = now();
@@ -1201,8 +1306,8 @@
         if (n < s) return "Starts in " + humanize(s - n);
         if (n >= e) return "Finished";
         return "Ends in " + humanize(e - n);
-    };
-    const humanize = (ms) => {
+      };
+      const humanize = (ms) => {
         const sec = Math.floor(ms / 1000);
         const d = Math.floor(sec / 86400);
         const h = Math.floor((sec % 86400) / 3600);
@@ -1214,154 +1319,165 @@
         if (m) parts.push(m + "m");
         parts.push(s + "s");
         return parts.join(" ");
-    };
-    const escapeHtml = (s) =>
+      };
+      const escapeHtml = (s) =>
         (s || "")
-        .replaceAll("&", "&amp;")
-        .replaceAll("<", "&lt;")
-        .replaceAll(">", "&gt;")
-        .replaceAll('"', "&quot;")
-        .replaceAll("'", "&#039;");
+          .replaceAll("&", "&amp;")
+          .replaceAll("<", "&lt;")
+          .replaceAll(">", "&gt;")
+          .replaceAll('"', "&quot;")
+          .replaceAll("'", "&#039;");
 
-    function icon(name) {
+      function icon(name) {
         if (name === "edit")
-        return `<svg class="icon" viewBox="0 0 24 24" fill="none"
+          return `<svg class="icon" viewBox="0 0 24 24" fill="none"
             stroke="currentColor"><path stroke-linecap="round"
             stroke-linejoin="round" stroke-width="1.5"
             d="M16.862 4.487l1.687-1.688a2.25 2.25 0 113.182 3.183L7.5
             20.313 3 21l.688-4.5L16.862 4.487z"/></svg>`;
         if (name === "trash")
-        return `<svg class="icon" viewBox="0 0 24 24" fill="none"
+          return `<svg class="icon" viewBox="0 0 24 24" fill="none"
             stroke="currentColor"><path stroke-linecap="round"
             stroke-linejoin="round" stroke-width="1.5"
             d="M19.5 7.5l-.867 12.142A2.25 2.25 0 0116.39 22H7.61a2.25
             2.25 0 01-2.243-2.358L4.5 7.5m3 0V5.25A2.25 2.25 0 019.75 3h4.5A2.25
             2.25 0 0116.5 5.25V7.5m-9 0h11.25M9.75 11.25v6m4.5-6v6"/></svg>`;
         if (name === "focus")
-        return `<svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-            <circle cx="12" cy="12" r="3"></circle>
-            <path d="M3 7V5a2 2 0 0 1 2-2h2"></path>
-            <path d="M17 3h2a2 2 0 0 1 2 2v2"></path>
-            <path d="M21 17v2a2 2 0 0 1-2 2h-2"></path>
-            <path d="M7 21H5a2 2 0 0 1-2-2v-2"></path>
-            </svg>`;
+          // Minimalista: estrella sólida pixel-friendly
+          return `<svg class="icon" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
+            <path d="M12 3.6l2.38 4.82 5.32.77-3.85 3.75.91 5.29L12 16.98l-4.76 2.25.91-5.29-3.85-3.75 5.32-.77L12 3.6z"/>
+          </svg>`;
         return "";
-    }
+      }
 
-    function maybeCelebrate(t, pct) {
+      function maybeCelebrate(t, pct) {
         if (!t) return;
         if (!t.celebrated && pct >= 100) {
-        t.celebrated = true;
-        Confetti.celebrate();
-        showToast("Task completed!");
+          t.celebrated = true;
+          Confetti.celebrate();
+          showToast("Task completed!");
         }
-    }
+      }
 
-    function render() {
+      function render() {
         const admin = isAdmin();
         document.body.classList.toggle("admin-on", admin);
 
         if (!tasks.length) {
-        els.grid.innerHTML = `
+          els.grid.innerHTML = `
             <div class="card" style="grid-column: span 12">
-            <div class="inner">
+              <div class="inner">
                 <div class="top"><div class="title">No tasks yet</div></div>
                 <div class="desc">Open /admin/task.html to create the first one.</div>
-            </div>
+              </div>
             </div>`;
-        return;
+          return;
         }
 
         const html = tasks
-        .map((t) => {
+          .map((t) => {
             const pct = computePct(t);
             const done = pct >= 100;
             const countdown = fmtCountdown(t);
             const focused = !!t.focused;
+
             const modeChip = admin
-            ? t.mode === "time"
+              ? t.mode === "time"
                 ? `<span class="chip admin-only">Time</span>`
                 : `<span class="chip manual admin-only">Manual</span>`
-            : "";
+              : "";
+
+            const focusChip =
+              admin && focused
+                ? `<span class="chip focus admin-only">Focus</span>`
+                : "";
+
+            const doneChip = done
+              ? `<span class="chip done">${admin ? "Completed!" : "Done"}</span>`
+              : "";
+
             const cdHtml = countdown
-            ? `<div class="countdown">${countdown}</div>`
-            : "";
+              ? `<div class="countdown">${countdown}</div>`
+              : "";
 
             return `
-            <div class="card ${focused ? 'focused' : ''}" data-id="${t.id}"
+            <div class="card ${focused ? "focused" : ""}" data-id="${t.id}"
                 style="--c1:${t.c1};--c2:${t.c2};"
                 ${admin ? 'draggable="true"' : ""}>
-                <div class="inner">
+              <div class="inner">
                 <div class="top">
-                    <div class="title">${escapeHtml(t.title)}</div>
-                    <div class="meta">
+                  <div class="title">${escapeHtml(t.title)}</div>
+                  <div class="meta">
                     ${modeChip}
-                    ${done ? `<span class="chip done">Completed!</span>` : ""}
-                    </div>
+                    ${focusChip}
+                    ${doneChip}
+                  </div>
                 </div>
 
                 <div class="desc">${escapeHtml(t.desc || "")}</div>
 
                 <div class="progress" title="${Math.round(pct)}%">
-                    <div class="progress-fill"
-                        style="--w:${pct}%;--c1:${t.c1};--c2:${t.c2}"></div>
+                  <div class="progress-fill"
+                    style="--w:${pct}%;--c1:${t.c1};--c2:${t.c2}"></div>
                 </div>
                 <div class="progress-labels">
-                    <span>Progress</span>
-                    <span>${fmtPct(pct)}</span>
+                  <span>Progress</span>
+                  <span>${fmtPct(pct)}</span>
                 </div>
 
                 ${cdHtml}
 
                 <div class="card-actions admin-only">
-                    <button class="icon-btn focus-btn ${focused ? 'active' : ''}" data-action="focus" title="Toggle Focus">
-                        ${icon("focus")}
-                    </button>
-                    <button class="icon-btn" data-action="edit">
+                  <button class="icon-btn focus-btn ${
+                    focused ? "active" : ""
+                  }" data-action="focus" title="Toggle Focus" aria-label="Toggle Focus">
+                    ${icon("focus")}&nbsp;Focus
+                  </button>
+                  <button class="icon-btn" data-action="edit" title="Edit" aria-label="Edit">
                     ${icon("edit")}&nbsp;Edit
-                    </button>
-                    <button class="icon-btn" data-action="delete">
+                  </button>
+                  <button class="icon-btn" data-action="delete" title="Delete" aria-label="Delete">
                     ${icon("trash")}&nbsp;Delete
-                    </button>
+                  </button>
                 </div>
-                </div>
+              </div>
             </div>`;
-        })
-        .join("");
+          })
+          .join("");
 
         els.grid.innerHTML = html;
 
         els.grid.querySelectorAll(".card").forEach((card) => {
-        const id = card.getAttribute("data-id");
-        card.querySelectorAll("[data-action]").forEach((btn) =>
+          const id = card.getAttribute("data-id");
+          card.querySelectorAll("[data-action]").forEach((btn) =>
             btn.addEventListener("click", (e) => {
-                e.stopPropagation();
-                handleCardAction(id, btn.getAttribute("data-action"));
+              e.stopPropagation();
+              handleCardAction(id, btn.getAttribute("data-action"));
             })
-        );
+          );
 
-        if (isAdmin()) {
+          if (isAdmin()) {
             card.addEventListener("dragstart", (e) => onDragStart(e, id));
             card.addEventListener("dragover", (e) => onDragOver(e, card));
             card.addEventListener("dragleave", () => {
-            card.classList.remove("drop-before", "drop-after");
+              card.classList.remove("drop-before", "drop-after");
             });
             card.addEventListener("drop", (e) => onDrop(e, id, card));
             card.addEventListener("dragend", () => {
-            card.classList.remove("dragging");
-            draggingId = null;
+              card.classList.remove("dragging");
+              draggingId = null;
             });
-        }
+          }
         });
-    }
+      }
 
-    function onDragStart(e, id) {
+      function onDragStart(e, id) {
         draggingId = id;
         e.dataTransfer.effectAllowed = "move";
         e.dataTransfer.setData("text/plain", id);
         e.currentTarget.classList.add("dragging");
-    }
-    function onDragOver(e, card) {
+      }
+      function onDragOver(e, card) {
         e.preventDefault();
         if (!draggingId) return;
         const rect = card.getBoundingClientRect();
@@ -1369,8 +1485,8 @@
         const half = rect.height / 2;
         card.classList.toggle("drop-before", y < half);
         card.classList.toggle("drop-after", y >= half);
-    }
-    function onDrop(e, targetId, card) {
+      }
+      function onDrop(e, targetId, card) {
         e.preventDefault();
         card.classList.remove("drop-before", "drop-after");
         const fromId = draggingId || e.dataTransfer.getData("text/plain");
@@ -1392,12 +1508,12 @@
         tasks.splice(newIndex, 0, moved);
         render();
         saveAll("Order saved");
-    }
+      }
 
-    function openEditor(task = null) {
+      function openEditor(task = null) {
         if (!isAdmin()) {
-        showToast("Admin only");
-        return;
+          showToast("Admin only");
+          return;
         }
         editingId = task ? task.id : null;
 
@@ -1411,81 +1527,79 @@
         els.end.value = task && task.end ? toLocalInput(task.end) : "";
         els.c1.value = task ? task.c1 : "#00f6a9";
         els.c2.value = task ? task.c2 : "#00a7ff";
-        els.focused.checked = task ? !!task.focused : false;
 
         els.manualGroup.style.display =
-        (task ? task.mode : "manual") === "manual" ? "block" : "none";
+          (task ? task.mode : "manual") === "manual" ? "block" : "none";
         els.timeGroup.style.display =
-        (task ? task.mode : "manual") === "time" ? "block" : "none";
+          (task ? task.mode : "manual") === "time" ? "block" : "none";
 
         toggleModal(els.editModal, true);
-    }
+      }
 
-    function handleCardAction(id, action) {
+      function handleCardAction(id, action) {
         if (!isAdmin()) {
-            showToast("Admin only");
-            return;
+          showToast("Admin only");
+          return;
         }
         const t = tasks.find((x) => x.id === id);
         if (!t) return;
 
         if (action === "edit") {
-            openEditor(t);
+          openEditor(t);
         } else if (action === "delete") {
-            if (confirm("Delete this task?")) {
-                tasks = tasks.filter((x) => x.id !== id);
-                render();
-                saveAll("Task deleted");
-            }
-        } else if (action === "focus") {
-            t.focused = !t.focused;
-            t.updatedAt = now();
+          if (confirm("Delete this task?")) {
+            tasks = tasks.filter((x) => x.id !== id);
             render();
-            saveAll(t.focused ? "Task focused" : "Task unfocused");
+            saveAll("Task deleted");
+          }
+        } else if (action === "focus") {
+          t.focused = !t.focused;
+          t.updatedAt = now();
+          render();
+          saveAll(t.focused ? "Task focused" : "Task unfocused");
         }
-    }
+      }
 
-    function toLocalInput(iso) {
+      function toLocalInput(iso) {
         const d = new Date(iso);
         const pad = (n) => String(n).padStart(2, "0");
-        return `${d.getFullYear()}-${pad(d.getMonth() + 1)}-${pad(d.getDate())}T${pad(
-        d.getHours()
-        )}:${pad(d.getMinutes())}`;
-    }
+        return `${d.getFullYear()}-${pad(d.getMonth() + 1)}-${pad(
+          d.getDate()
+        )}T${pad(d.getHours())}:${pad(d.getMinutes())}`;
+      }
 
-    function saveEditor() {
+      function saveEditor() {
         const title = els.title.value.trim();
         const desc = els.desc.value.trim();
         const mode = els.mode.value;
         const percent = clamp(parseInt(els.percent.value || "0", 10), 0, 100);
         const c1 = els.c1.value.trim() || "#00f6a9";
         const c2 = els.c2.value.trim() || "#00a7ff";
-        const focused = els.focused.checked;
 
         let start = null,
-        end = null;
+          end = null;
         if (mode === "time") {
-        const s = els.start.value ? new Date(els.start.value) : null;
-        const e = els.end.value ? new Date(els.end.value) : null;
-        if (!s || !e || isNaN(s) || isNaN(e)) {
+          const s = els.start.value ? new Date(els.start.value) : null;
+          const e = els.end.value ? new Date(els.end.value) : null;
+          if (!s || !e || isNaN(s) || isNaN(e)) {
             showToast("Set Start and End for Time mode");
             return;
-        }
-        start = s.toISOString();
-        end = e.toISOString();
+          }
+          start = s.toISOString();
+          end = e.toISOString();
         }
 
         if (!title) {
-        showToast("Give it a title");
-        return;
+          showToast("Give it a title");
+          return;
         }
 
         if (editingId) {
-        const t = tasks.find((x) => x.id === editingId);
-        if (!t) return;
-        const prevPct = computePct(t);
+          const t = tasks.find((x) => x.id === editingId);
+          if (!t) return;
+          const prevPct = computePct(t);
 
-        Object.assign(t, {
+          Object.assign(t, {
             title,
             desc,
             mode,
@@ -1494,16 +1608,15 @@
             end: mode === "time" ? end : null,
             c1,
             c2,
-            focused,
             updatedAt: now()
-        });
+          });
 
-        const newPct = computePct(t);
-        if (newPct >= 100 && prevPct < 100) {
+          const newPct = computePct(t);
+          if (newPct >= 100 && prevPct < 100) {
             maybeCelebrate(t, newPct);
-        }
+          }
         } else {
-        const newTask = {
+          const newTask = {
             id: uid(),
             title,
             desc,
@@ -1513,169 +1626,176 @@
             end: mode === "time" ? end : null,
             c1,
             c2,
-            focused,
+            focused: false,
             createdAt: now(),
             updatedAt: now()
-        };
-        tasks.unshift(newTask);
-        const p = computePct(newTask);
-        if (p >= 100) maybeCelebrate(newTask, p);
+          };
+          tasks.unshift(newTask);
+          const p = computePct(newTask);
+          if (p >= 100) maybeCelebrate(newTask, p);
         }
 
         toggleModal(els.editModal, false);
         render();
         saveAll("Saved");
-    }
+      }
 
-    function toggleModal(modal, show) {
+      function toggleModal(modal, show) {
         modal.classList.toggle("show", !!show);
-    }
+      }
 
-    // Pixel confetti (igual que tu versión anterior)
-    const Confetti = (() => {
+      // Pixel confetti
+      const Confetti = (() => {
         const canvas = els.confetti;
         const ctx = canvas.getContext("2d");
-        const colors = ["#00f6a9", "#00a7ff", "#a855f7", "#ffd54d", "#34d399", "#ff5178"];
+        const colors = [
+          "#00f6a9",
+          "#00a7ff",
+          "#a855f7",
+          "#ffd54d",
+          "#34d399",
+          "#ff5178"
+        ];
         let W = 0,
-        H = 0;
+          H = 0;
         let parts = [];
         let raf = null;
 
         const resize = () => {
-        W = (canvas.width = window.innerWidth);
-        H = (canvas.height = window.innerHeight);
-        ctx.imageSmoothingEnabled = false;
+          W = (canvas.width = window.innerWidth);
+          H = (canvas.height = window.innerHeight);
+          ctx.imageSmoothingEnabled = false;
         };
         window.addEventListener("resize", resize);
         resize();
 
         function burst(x = W / 2, y = H / 3, n = 240) {
-        for (let i = 0; i < n; i++) {
+          for (let i = 0; i < n; i++) {
             const a = Math.random() * Math.PI * 2;
             const s = 2 + Math.random() * 5;
             parts.push({
-            x,
-            y,
-            vx: Math.cos(a) * s,
-            vy: Math.sin(a) * s - 3,
-            g: 0.12 + Math.random() * 0.12,
-            s: 6 + ((Math.random() * 8) | 0),
-            c: colors[(Math.random() * colors.length) | 0],
-            life: 70 + ((Math.random() * 40) | 0)
+              x,
+              y,
+              vx: Math.cos(a) * s,
+              vy: Math.sin(a) * s - 3,
+              g: 0.12 + Math.random() * 0.12,
+              s: 6 + ((Math.random() * 8) | 0),
+              c: colors[(Math.random() * colors.length) | 0],
+              life: 70 + ((Math.random() * 40) | 0)
             });
-        }
+          }
         }
 
         function tick() {
-        ctx.clearRect(0, 0, W, H);
-        if (!parts.length) {
+          ctx.clearRect(0, 0, W, H);
+          if (!parts.length) {
             raf = null;
             return;
-        }
-        parts.forEach((p) => {
+          }
+          parts.forEach((p) => {
             p.vy += p.g;
             p.x += p.vx;
             p.y += p.vy;
             p.life--;
-        });
-        parts = parts.filter((p) => p.life > 0 && p.y < H + 20);
-        parts.forEach((p) => {
+          });
+          parts = parts.filter((p) => p.life > 0 && p.y < H + 20);
+          parts.forEach((p) => {
             ctx.fillStyle = p.c;
             ctx.fillRect(p.x | 0, p.y | 0, p.s, p.s);
-        });
-        raf = requestAnimationFrame(tick);
+          });
+          raf = requestAnimationFrame(tick);
         }
 
         return {
-        celebrate() {
+          celebrate() {
             burst(W / 2, H / 3, 260);
             burst(W / 2, H / 3, 120);
             if (!raf) raf = requestAnimationFrame(tick);
-        }
+          }
         };
-    })();
+      })();
 
-    // Time-mode UI refresh (no escribe al servidor)
-    setInterval(() => {
+      // Time-mode UI refresh (no escribe al servidor)
+      setInterval(() => {
         document.querySelectorAll(".card").forEach((card) => {
-        const id = card.getAttribute("data-id");
-        const t = tasks.find((x) => x.id === id);
-        if (!t) return;
-        if (t.mode !== "time") return;
-        const fill = card.querySelector(".progress-fill");
-        const labels = card.querySelector(".progress-labels span:last-child");
-        if (fill) fill.style.setProperty("--w", computePct(t) + "%");
-        if (labels) labels.textContent = fmtPct(computePct(t));
-        const cd = card.querySelector(".countdown");
-        if (cd) cd.textContent = fmtCountdown(t);
+          const id = card.getAttribute("data-id");
+          const t = tasks.find((x) => x.id === id);
+          if (!t || t.mode !== "time") return;
+          const p = computePct(t);
+          const fill = card.querySelector(".progress-fill");
+          const labels = card.querySelector(
+            ".progress-labels span:last-child"
+          );
+          if (fill) fill.style.setProperty("--w", p + "%");
+          if (labels) labels.textContent = fmtPct(p);
+          const cd = card.querySelector(".countdown");
+          if (cd) cd.textContent = fmtCountdown(t);
         });
-    }, 1000);
+      }, 1000);
 
-    // Events
-    els.addTaskBtn?.addEventListener("click", () => openEditor());
-    els.mode.addEventListener("change", () => {
+      // Events
+      els.addTaskBtn?.addEventListener("click", () => openEditor());
+      els.mode.addEventListener("change", () => {
         const m = els.mode.value;
         els.manualGroup.style.display = m === "manual" ? "block" : "none";
         els.timeGroup.style.display = m === "time" ? "block" : "none";
-    });
-    els.percent.addEventListener("input", () => {
+      });
+      els.percent.addEventListener("input", () => {
         els.manualValue.textContent = fmtPct(els.percent.value);
-    });
-    els.cancelEdit.addEventListener("click", () =>
+      });
+      els.cancelEdit.addEventListener("click", () =>
         toggleModal(els.editModal, false)
-    );
-    els.saveTask.addEventListener("click", saveEditor);
-    els.deleteTask.addEventListener("click", () => {
+      );
+      els.saveTask.addEventListener("click", saveEditor);
+      els.deleteTask.addEventListener("click", () => {
         if (!editingId) return toggleModal(els.editModal, false);
         const t = tasks.find((x) => x.id === editingId);
         if (!t) return toggleModal(els.editModal, false);
         if (confirm("Delete this task?")) {
-        tasks = tasks.filter((x) => x.id !== editingId);
-        toggleModal(els.editModal, false);
-        render();
-        saveAll("Task deleted");
+          tasks = tasks.filter((x) => x.id !== editingId);
+          toggleModal(els.editModal, false);
+          render();
+          saveAll("Task deleted");
         }
-    });
+      });
 
-    [els.editModal].forEach((modal) => {
+      [els.editModal].forEach((modal) => {
         modal.addEventListener("click", (e) => {
-        if (e.target === modal) toggleModal(modal, false);
+          if (e.target === modal) toggleModal(modal, false);
         });
-    });
-    window.addEventListener("keydown", (e) => {
+      });
+      window.addEventListener("keydown", (e) => {
         if (e.key === "Escape") toggleModal(els.editModal, false);
-    });
+      });
 
-    async function boot() {
+      async function boot() {
         try {
-            const data = await API.fetch();
-            serverVersion = data.version || 0;
-            tasks = Array.isArray(data.tasks) ? data.tasks : [];
-            render();
+          const data = await API.fetch();
+          serverVersion = data.version || 0;
+          tasks = Array.isArray(data.tasks) ? data.tasks : [];
+          render();
         } catch (e) {
-            tasks = [];
-            render();
+          tasks = [];
+          render();
         }
 
-        // confeti al entrar si ya hay tareas completadas
         completedIds = computeCompletedIds(tasks);
         confettiOnEntryIfCompleted();
 
         connectWS();
-        }
+      }
 
-    async function saveAll(msg = "Saved") {
+      async function saveAll(msg = "Saved") {
         if (!isAdmin()) return;
         try {
-        await API.save(tasks);
-        showToast(msg);
-        // El WS del servidor emitirá el set → todos (tú incluido) se sincronizan
+          await API.save(tasks);
+          showToast(msg);
         } catch (e) {
-        showToast("Save failed");
+          showToast("Save failed");
         }
-    }
+      }
 
-    boot();
+      boot();
     </script>
   </body>
 </html>
