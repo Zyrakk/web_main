@@ -417,6 +417,27 @@ body {
   color: var(--text);
 }
 
+/* Mantener el header siempre visible, por si alguna clase intenta ocultarlo */
+.header {
+  transform: translateY(0) !important;
+  opacity: 1 !important;
+}
+
+/* Neutraliza posibles clases de ocultación si alguna lógica externa las aplica */
+.header.hide,
+.header.is-hidden,
+.header--hidden {
+  transform: translateY(0) !important;
+  opacity: 1 !important;
+  visibility: visible !important;
+  pointer-events: auto !important;
+}
+
+/* Evita que al navegar por anclas el contenido quede oculto bajo el header */
+html {
+  scroll-padding-top: 72px; /* ajusta si tu header mide distinto */
+}
+
 /* Responsive */
 @media (max-width: 768px) {
   .menu-toggle {
