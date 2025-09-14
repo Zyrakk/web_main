@@ -11,7 +11,11 @@
       content="width=device-width, initial-scale=1, viewport-fit=cover"
     />
     <meta name="color-scheme" content="dark only" />
-    <link rel="icon" href="./sources/favicon_landing.ico" type="image/x-icon">
+    <link
+      rel="icon"
+      href="./sources/favicon_landing.ico"
+      type="image/x-icon"
+    />
     <title>zyrak.cloud</title>
     <style>
       :root {
@@ -22,6 +26,14 @@
         --text: #e2e8f0;
         --muted: #7a8aa6;
         --glass: rgba(15, 23, 42, 0.5);
+
+        /* Responsive scale controls (added) */
+        --tile-size: clamp(120px, 22vmin, 360px);
+        --tile-gap: clamp(12px, 3vmin, 36px);
+        --icon-size: clamp(48px, 7vmin, 90px);
+        --icon-inner: clamp(28px, 4.6vmin, 60px);
+        --brand-size: clamp(2.2rem, 9vmin, 6.8rem);
+        --brand-letter: clamp(6px, 1.2vmin, 14px);
       }
 
       * {
@@ -191,9 +203,10 @@
       }
 
       .brand {
-        font-size: clamp(2.6rem, 8vw, 5.6rem);
+        /* scaled title */
+        font-size: var(--brand-size);
         font-weight: 200;
-        letter-spacing: 12px;
+        letter-spacing: var(--brand-letter);
         background: linear-gradient(
           45deg,
           #ffffff,
@@ -231,8 +244,8 @@
       /* Apps grid */
       .apps {
         display: grid;
-        grid-template-columns: repeat(2, 220px);
-        gap: 2.4rem 2.4rem;
+        grid-template-columns: repeat(2, var(--tile-size));
+        gap: var(--tile-gap);
         justify-content: center;
         align-content: center;
       }
@@ -295,8 +308,8 @@
       }
 
       .app-icon {
-        width: 64px;
-        height: 64px;
+        width: var(--icon-size);
+        height: var(--icon-size);
         display: grid;
         place-items: center;
         border-radius: 16px;
@@ -311,8 +324,8 @@
       }
 
       .app-icon svg {
-        width: 40px;
-        height: 40px;
+        width: var(--icon-inner);
+        height: var(--icon-inner);
         stroke: currentColor;
         fill: none;
         stroke-width: 1.6;
@@ -328,9 +341,9 @@
       }
 
       .app-title {
-        font-size: 1.05rem;
+        font-size: clamp(0.9rem, 1.8vmin, 1.25rem);
         font-weight: 600;
-        letter-spacing: 2px;
+        letter-spacing: clamp(1px, 0.5vmin, 2px);
         text-transform: uppercase;
         color: #e6edf6;
         position: relative;
@@ -378,25 +391,26 @@
         }
 
         .container {
-            min-height: calc(100dvh - 240px);
-            display: grid;
-            place-items: center;
-            padding-bottom: max(24px, env(safe-area-inset-bottom));
+          min-height: calc(100dvh - 240px);
+          display: grid;
+          place-items: center;
+          padding-bottom: max(24px, env(safe-area-inset-bottom));
         }
 
         .apps {
-            width: min(92vw, 420px);
-            margin-inline: auto;
-            grid-template-columns: repeat(2, 1fr);
-            gap: 1.25rem;
-            place-content: center;
-            justify-items: center;
-            align-items: center;
+          /* keep 2x2, scale tiles to viewport */
+          grid-template-columns: repeat(2, var(--tile-size));
+          gap: var(--tile-gap);
+          place-content: center;
+          justify-items: center;
+          align-items: center;
+          width: auto;
+          margin-inline: auto;
         }
 
         .app {
-            width: 100%;
-            max-width: 200px; /* keeps tiles neat and centered */
+          width: 100%;
+          max-width: none; /* allow scaling */
         }
 
         .frame {
