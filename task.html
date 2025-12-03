@@ -1836,12 +1836,12 @@
           
           if (!authData.authenticated) {
             // No autenticado, redirigir al login
-            window.location.href = "/";
+            window.location.href = "/login";
             return;
           }
         } catch (e) {
           // Error al verificar auth, redirigir al login
-          window.location.href = "/";
+          window.location.href = "/login";
           return;
         }
 
@@ -1854,7 +1854,7 @@
         } catch (e) {
           // Si da 401, redirigir al login
           if (e.message.includes("401")) {
-            window.location.href = "/";
+            window.location.href = "/login";
             return;
           }
           tasks = [];
