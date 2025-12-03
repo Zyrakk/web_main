@@ -1829,42 +1829,43 @@
       });
 
       async function boot() {
-        // Verificar autenticación primero
+        // Verificar autenticación
+        let isAuthenticated = false;
+        
         try {
           const authCheck = await fetch("/api/auth/status");
           const authData = await authCheck.json();
-          
-          if (!authData.authenticated) {
-            // No autenticado, redirigir al login
-            window.location.href = "/login";
-            return;
-          }
+          isAuthenticated = authData.authenticated;
         } catch (e) {
-          // Error al verificar auth, redirigir al login
-          window.location.href = "/login";
-          return;
+          // Si falla, asumir no autenticado (modo viewer)
+          isAuthenticated = false;
         }
-
-        // Ya autenticado, cargar tareas
+      
+        // Aplicar clase admin-on si está autenticado
+        document.body.classList.toggle("admin-on", isAuthenticated);
+      
+        // Cargar tareas (funciona para autenticados y no autenticados)
         try {
           const data = await API.fetch();
           serverVersion = data.version || 0;
           tasks = Array.isArray(data.tasks) ? data.tasks : [];
           render();
         } catch (e) {
-          // Si da 401, redirigir al login
-          if (e.message.includes("401")) {
-            window.location.href = "/login";
-            return;
-          }
+          console.error("Error loading tasks:", e);
           tasks = [];
           render();
         }
-
+      
         completedIds = computeCompletedIds(tasks);
         confettiOnEntryIfCompleted();
-
+      
+        // Conectar WebSocket (funciona para todos)
         connectWS();
+        
+        // Si no está autenticado y está en /admin/, redirigir a login
+        if (!isAuthenticated && window.location.pathname.startsWith("/admin")) {
+          window.location.href = "/login?redirect=" + encodeURIComponent(window.location.pathname);
+        }
       }
 
       async function saveAll(msg = "Saved") {
