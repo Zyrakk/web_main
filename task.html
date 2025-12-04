@@ -3,165 +3,230 @@
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
-    <title>Z - SYSTEM // MINIMAL</title>
+    <title>SYSTEM // Z-TASKS</title>
     
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600&family=Press+Start+2P&family=VT323&display=swap" rel="stylesheet" />
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500&family=JetBrains+Mono:wght@400;700&family=Rajdhani:wght@500;600;700&display=swap" rel="stylesheet" />
 
     <style>
       :root {
-        /* Minimalist Dark Palette */
-        --bg: #0e0e10;
-        --surface: #18181b;
-        --surface-highlight: #27272a;
+        /* Professional Dark Theme */
+        --bg-deep: #050505;
+        --bg-panel: rgba(20, 20, 23, 0.7);
+        --bg-panel-hover: rgba(30, 30, 35, 0.8);
         
-        --text-main: #f4f4f5;
-        --text-muted: #a1a1aa;
+        /* Functional Colors */
+        --text-primary: #e2e8f0;
+        --text-secondary: #94a3b8;
+        --border-dim: rgba(255, 255, 255, 0.08);
+        --border-light: rgba(255, 255, 255, 0.15);
         
-        --border: #3f3f46;
-        --border-focus: #e4e4e7;
-        
-        /* Accents */
-        --accent-primary: #10b981; /* Green */
-        --accent-danger: #ef4444;  /* Red */
-        --accent-priority: #eab308; /* Yellow/Gold */
-        
-        /* Dimensions */
-        --pixel-shadow: 4px 4px 0px 0px rgba(0,0,0,0.4);
-        --pixel-shadow-hover: 6px 6px 0px 0px rgba(0,0,0,0.6);
+        /* Accents (Neon but elegant) */
+        --accent-blue: #3b82f6;
+        --accent-cyan: #06b6d4;
+        --accent-purple: #8b5cf6;
+        --accent-success: #10b981;
+        --accent-alert: #f59e0b; /* Gold/Amber for Priority */
+        --accent-danger: #ef4444;
+
+        /* Measurements */
+        --radius: 4px; /* Slight rounding, not fully square */
+        --card-shadow: 0 4px 20px rgba(0,0,0,0.5);
       }
 
       * { box-sizing: border-box; }
 
       body {
         margin: 0;
-        background-color: var(--bg);
-        /* Subtle dot grid pattern */
-        background-image: radial-gradient(var(--border) 1px, transparent 0);
-        background-size: 20px 20px;
-        color: var(--text-main);
+        background-color: var(--bg-deep);
+        color: var(--text-primary);
         font-family: 'Inter', sans-serif;
         height: 100vh;
         overflow-x: hidden;
+        /* Technical Background */
+        background-image: 
+          linear-gradient(rgba(255, 255, 255, 0.03) 1px, transparent 1px),
+          linear-gradient(90deg, rgba(255, 255, 255, 0.03) 1px, transparent 1px);
+        background-size: 40px 40px;
       }
 
-      /* --- LAYOUT --- */
+      /* Vignette overlay for depth */
+      body::after {
+        content: "";
+        position: fixed;
+        inset: 0;
+        background: radial-gradient(circle at center, transparent 40%, #000 100%);
+        pointer-events: none;
+        z-index: 0;
+      }
+
       .container {
-        max-width: 1200px;
+        position: relative;
+        z-index: 10;
+        max-width: 1400px;
         margin: 0 auto;
         padding: 40px 20px;
       }
 
+      /* --- HEADER --- */
       header {
         display: flex;
         justify-content: space-between;
-        align-items: center;
-        margin-bottom: 60px;
-        border-bottom: 2px solid var(--border);
+        align-items: flex-end;
+        border-bottom: 1px solid var(--border-dim);
         padding-bottom: 20px;
+        margin-bottom: 40px;
+        position: relative;
+      }
+      
+      header::after {
+        /* Decorative glowing line */
+        content: "";
+        position: absolute;
+        bottom: -1px;
+        left: 0;
+        width: 100px;
+        height: 1px;
+        background: var(--accent-cyan);
+        box-shadow: 0 0 10px var(--accent-cyan);
       }
 
+      .brand {
+        display: flex;
+        flex-direction: column;
+      }
+      
       .brand h1 {
-        font-family: 'Press Start 2P', monospace;
-        font-size: 20px;
+        font-family: 'Rajdhani', sans-serif;
+        font-size: 32px;
+        font-weight: 700;
         margin: 0;
-        line-height: 1.5;
-        color: var(--text-main);
-      }
-      .brand span {
-        color: var(--text-muted);
-        font-size: 12px;
-        font-family: 'VT323', monospace;
         letter-spacing: 2px;
+        text-transform: uppercase;
+        background: linear-gradient(90deg, #fff, #94a3b8);
+        -webkit-background-clip: text;
+        -webkit-text-fill-color: transparent;
+      }
+      
+      .brand .status {
+        font-family: 'JetBrains Mono', monospace;
+        font-size: 12px;
+        color: var(--accent-success);
+        margin-top: 4px;
+        display: flex;
+        align-items: center;
+        gap: 8px;
+      }
+      .brand .status::before {
+        content: "";
         display: block;
+        width: 8px;
+        height: 8px;
+        background: var(--accent-success);
+        border-radius: 50%;
+        box-shadow: 0 0 8px var(--accent-success);
+        animation: pulseDot 2s infinite;
       }
 
-      /* --- BUTTONS (Hard Pixel Style) --- */
+      @keyframes pulseDot { 0%,100%{opacity:1;} 50%{opacity:0.5;} }
+
+      /* --- BUTTONS --- */
       .btn {
-        background: var(--surface);
-        border: 2px solid var(--border);
-        color: var(--text-main);
-        padding: 10px 20px;
-        font-family: 'VT323', monospace;
-        font-size: 18px;
+        background: rgba(255,255,255,0.03);
+        border: 1px solid var(--border-light);
+        color: var(--text-primary);
+        font-family: 'Rajdhani', sans-serif;
+        font-weight: 600;
         text-transform: uppercase;
+        letter-spacing: 1px;
+        padding: 10px 24px;
         cursor: pointer;
+        transition: all 0.2s ease;
         text-decoration: none;
         display: inline-flex;
         align-items: center;
-        transition: transform 0.1s, box-shadow 0.1s;
-        box-shadow: var(--pixel-shadow);
+        gap: 8px;
+        border-radius: var(--radius);
+        font-size: 14px;
       }
       .btn:hover {
-        transform: translate(-2px, -2px);
-        box-shadow: var(--pixel-shadow-hover);
-        border-color: var(--text-main);
-      }
-      .btn:active {
-        transform: translate(0, 0);
-        box-shadow: none;
+        background: rgba(255,255,255,0.1);
+        border-color: #fff;
+        transform: translateY(-1px);
+        box-shadow: 0 4px 12px rgba(0,0,0,0.3);
       }
       
       .btn.primary {
-        background: var(--text-main);
-        color: var(--bg);
-        border-color: var(--text-main);
-        font-weight: bold;
+        background: var(--accent-blue);
+        border-color: var(--accent-blue);
+        color: #fff;
       }
+      .btn.primary:hover {
+        background: #2563eb;
+        box-shadow: 0 0 15px rgba(59, 130, 246, 0.4);
+      }
+      
       .btn.danger {
-        border-color: var(--accent-danger);
+        border-color: rgba(239, 68, 68, 0.5);
         color: var(--accent-danger);
       }
       .btn.danger:hover {
         background: var(--accent-danger);
-        color: white;
+        color: #fff;
       }
 
-      /* --- GRID & CARDS --- */
+      /* --- TASK GRID --- */
       .grid {
         display: grid;
-        grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
-        gap: 30px;
+        grid-template-columns: repeat(auto-fill, minmax(360px, 1fr));
+        gap: 24px;
+        padding-bottom: 80px;
       }
 
+      /* --- CARD DESIGN --- */
       .card {
-        background: var(--surface);
-        border: 2px solid var(--border);
+        background: var(--bg-panel);
+        border: 1px solid var(--border-dim);
+        border-radius: var(--radius);
+        backdrop-filter: blur(12px); /* Professional Glass Effect */
         padding: 0;
         position: relative;
-        transition: transform 0.2s, box-shadow 0.2s;
+        overflow: hidden;
+        transition: transform 0.3s cubic-bezier(0.2, 0.8, 0.2, 1), box-shadow 0.3s ease;
         display: flex;
         flex-direction: column;
+        box-shadow: var(--card-shadow);
       }
 
       .card:hover {
         transform: translateY(-4px);
-        box-shadow: var(--pixel-shadow);
-        border-color: var(--border-focus);
+        border-color: var(--border-light);
+        box-shadow: 0 12px 30px rgba(0,0,0,0.6);
+        background: var(--bg-panel-hover);
       }
 
-      /* Color Bar Strip */
-      .card-strip {
-        height: 6px;
-        background: linear-gradient(90deg, var(--c1, #333), var(--c2, #666));
-        border-bottom: 2px solid var(--border);
+      /* Color Indicator Strip */
+      .card-accent-strip {
+        height: 3px;
+        width: 100%;
+        background: linear-gradient(90deg, var(--c1), var(--c2));
+        box-shadow: 0 1px 10px var(--c1);
       }
 
-      /* --- PRIORITY STYLE (High Visibility) --- */
+      /* --- PRIORITY STATE (IMPACTFUL) --- */
       .card.focused {
-        border: 2px solid var(--accent-priority);
-        box-shadow: 6px 6px 0px var(--accent-priority);
-        transform: translate(-2px, -2px);
-        animation: pulseBorder 3s infinite;
+        border: 1px solid var(--accent-alert);
+        box-shadow: 0 0 20px rgba(245, 158, 11, 0.15);
       }
-      /* Diagonal stripes pattern for priority background */
+      
+      /* Background "Warning" Stripes for Priority */
       .card.focused::before {
         content: "";
         position: absolute;
         inset: 0;
         background: repeating-linear-gradient(
-          45deg,
-          rgba(234, 179, 8, 0.03),
-          rgba(234, 179, 8, 0.03) 10px,
+          -45deg,
+          rgba(245, 158, 11, 0.03),
+          rgba(245, 158, 11, 0.03) 10px,
           transparent 10px,
           transparent 20px
         );
@@ -169,242 +234,302 @@
         z-index: 0;
       }
 
-      @keyframes pulseBorder {
-        0%, 100% { border-color: var(--accent-priority); }
-        50% { border-color: #fff; }
+      /* Priority Glow Pulse */
+      .card.focused .card-accent-strip {
+        height: 4px;
+        background: var(--accent-alert);
+        box-shadow: 0 0 15px var(--accent-alert);
+        animation: glowPulse 2s infinite;
       }
+      
+      @keyframes glowPulse { 0%,100%{opacity:1;} 50%{opacity:0.6;} }
 
-      .card-inner {
-        padding: 20px;
-        flex: 1;
+      .card-body {
+        padding: 24px;
+        position: relative;
+        z-index: 1;
         display: flex;
         flex-direction: column;
-        z-index: 1;
+        gap: 16px;
+        flex: 1;
       }
 
+      /* Header Area */
       .card-header {
         display: flex;
         justify-content: space-between;
         align-items: flex-start;
-        margin-bottom: 15px;
-        gap: 10px;
       }
-
+      
       .card-title {
-        font-family: 'Press Start 2P', cursive;
-        font-size: 14px;
-        line-height: 1.6;
-        color: var(--text-main);
         margin: 0;
-      }
-
-      /* Chips/Badges */
-      .badge {
-        font-family: 'VT323', monospace;
-        font-size: 14px;
-        padding: 2px 6px;
-        border: 1px solid var(--border);
-        text-transform: uppercase;
-        color: var(--text-muted);
-        background: var(--bg);
-      }
-      .badge.priority {
-        background: var(--accent-priority);
-        color: #000;
-        border-color: var(--accent-priority);
-        font-weight: bold;
-        animation: blink 2s steps(2) infinite;
-      }
-      .badge.done {
-        background: var(--accent-primary);
-        color: #000;
-        border-color: var(--accent-primary);
-      }
-      @keyframes blink { 0%, 100% {opacity: 1;} 50% {opacity: 0.5;} }
-
-      /* Description Block */
-      .card-desc {
-        background: #111;
-        border: 1px solid var(--border);
-        padding: 10px;
-        font-family: 'VT323', monospace;
+        font-family: 'Rajdhani', sans-serif;
+        font-weight: 700;
         font-size: 18px;
-        color: #ccc;
-        margin-bottom: 15px;
-        white-space: pre-wrap; /* Mantiene saltos de línea */
+        color: #fff;
         line-height: 1.3;
-        min-height: 40px;
+        letter-spacing: 0.5px;
       }
 
-      /* Progress */
-      .progress-wrap {
+      .status-badge {
+        font-family: 'JetBrains Mono', monospace;
+        font-size: 11px;
+        padding: 4px 8px;
+        border-radius: 2px;
+        background: rgba(255,255,255,0.05);
+        border: 1px solid var(--border-dim);
+        color: var(--text-secondary);
+        text-transform: uppercase;
+      }
+      .status-badge.priority-badge {
+        background: rgba(245, 158, 11, 0.15);
+        color: var(--accent-alert);
+        border-color: var(--accent-alert);
+        font-weight: bold;
+        display: flex;
+        align-items: center;
+        gap: 6px;
+      }
+      
+      /* Description Block - Tech Style */
+      .card-desc {
+        background: rgba(0,0,0,0.3);
+        border-left: 2px solid var(--border-dim);
+        padding: 12px;
+        font-family: 'JetBrains Mono', monospace; /* Tech font */
+        font-size: 13px;
+        color: var(--text-secondary);
+        line-height: 1.6;
+        white-space: pre-wrap; /* VITAL: Keeps line breaks */
+        border-radius: 0 var(--radius) var(--radius) 0;
+      }
+
+      /* Progress Bar */
+      .progress-section {
         margin-top: auto;
       }
-      .progress-bar {
-        height: 16px;
-        border: 2px solid var(--text-main);
-        background: var(--bg);
-        padding: 2px;
-        margin-bottom: 5px;
+      
+      .progress-labels {
+        display: flex;
+        justify-content: space-between;
+        font-family: 'Rajdhani', sans-serif;
+        font-weight: 600;
+        font-size: 13px;
+        color: var(--text-secondary);
+        margin-bottom: 6px;
       }
+      
+      .progress-track {
+        height: 6px;
+        background: rgba(255,255,255,0.05);
+        border-radius: 10px;
+        overflow: hidden;
+      }
+      
       .progress-fill {
         height: 100%;
         background: linear-gradient(90deg, var(--c1), var(--c2));
         width: var(--w);
-        transition: width 0.4s ease;
-      }
-      .progress-meta {
-        display: flex;
-        justify-content: space-between;
-        font-family: 'VT323', monospace;
-        font-size: 16px;
-        color: var(--text-muted);
-      }
-
-      /* Admin Actions */
-      .actions {
-        margin-top: 15px;
-        padding-top: 15px;
-        border-top: 1px dashed var(--border);
-        display: flex;
-        justify-content: flex-end;
-        gap: 10px;
+        border-radius: 10px;
+        transition: width 0.5s cubic-bezier(0.4, 0, 0.2, 1);
+        position: relative;
       }
       
+      /* Little shine on progress bar */
+      .progress-fill::after {
+        content: "";
+        position: absolute;
+        top: 0; right: 0; bottom: 0; left: 0;
+        background: linear-gradient(90deg, transparent, rgba(255,255,255,0.4), transparent);
+        transform: translateX(-100%);
+        animation: shimmer 2s infinite;
+      }
+      @keyframes shimmer { 100% { transform: translateX(100%); } }
+
+      /* Admin Actions Footer */
+      .card-footer {
+        margin-top: 10px;
+        padding-top: 15px;
+        border-top: 1px solid var(--border-dim);
+        display: flex;
+        justify-content: flex-end;
+        gap: 8px;
+        opacity: 0.8;
+        transition: opacity 0.2s;
+      }
+      .card:hover .card-footer { opacity: 1; }
+
       .icon-btn {
         background: transparent;
-        border: 1px solid transparent;
-        color: var(--text-muted);
+        border: none;
+        color: var(--text-secondary);
         cursor: pointer;
-        padding: 5px;
+        padding: 6px;
+        border-radius: 4px;
+        transition: all 0.2s;
+        display: flex;
+        align-items: center;
+        justify-content: center;
       }
-      .icon-btn:hover {
-        color: var(--text-main);
-        background: var(--surface-highlight);
-        border-color: var(--border);
+      .icon-btn svg { width: 18px; height: 18px; fill: none; stroke: currentColor; stroke-width: 2; }
+      
+      .icon-btn:hover { background: rgba(255,255,255,0.1); color: #fff; }
+      
+      /* Distinct Priority Toggle Button */
+      .icon-btn.priority-toggle {
+        color: var(--text-secondary);
       }
-      .icon-btn.focus-toggle {
-        color: var(--accent-priority);
+      .icon-btn.priority-toggle:hover {
+        color: var(--accent-alert);
+        background: rgba(245, 158, 11, 0.1);
       }
-      .icon-btn.focus-toggle.active {
-        background: var(--accent-priority);
-        color: #000;
+      .icon-btn.priority-toggle.active {
+        color: var(--accent-alert);
+        background: rgba(245, 158, 11, 0.15);
+        box-shadow: 0 0 10px rgba(245, 158, 11, 0.2);
       }
 
-      /* --- EDIT MODAL --- */
+      /* --- MODAL (HUD Style) --- */
       .modal {
         position: fixed;
         inset: 0;
-        background: rgba(0,0,0,0.8);
+        background: rgba(0,0,0,0.7);
+        backdrop-filter: blur(4px);
         display: none;
-        place-items: center;
+        align-items: center;
+        justify-content: center;
         z-index: 100;
+        opacity: 0;
+        transition: opacity 0.2s;
       }
-      .modal.show { display: grid; }
+      .modal.show { display: flex; opacity: 1; }
       
-      .modal-box {
-        background: var(--surface);
-        border: 2px solid var(--text-main);
-        padding: 30px;
+      .modal-panel {
+        background: #0f0f11;
+        border: 1px solid var(--border-light);
         width: 100%;
-        max-width: 500px;
-        box-shadow: 8px 8px 0px #000;
+        max-width: 550px;
+        border-radius: 6px;
+        box-shadow: 0 20px 50px rgba(0,0,0,0.8);
+        display: flex;
+        flex-direction: column;
+        overflow: hidden;
       }
       
-      .form-row { display: grid; grid-template-columns: 1fr 1fr; gap: 15px; margin-bottom: 15px; }
-      .form-group { margin-bottom: 15px; }
-      
-      label {
-        display: block;
-        font-family: 'VT323', monospace;
-        text-transform: uppercase;
-        color: var(--text-muted);
-        margin-bottom: 5px;
+      .modal-header {
+        background: rgba(255,255,255,0.03);
+        padding: 15px 24px;
+        border-bottom: 1px solid var(--border-dim);
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+      }
+      .modal-header h3 {
+        margin: 0;
+        font-family: 'Rajdhani';
+        font-weight: 700;
         font-size: 18px;
+        letter-spacing: 1px;
+        color: var(--text-primary);
+      }
+
+      .modal-body {
+        padding: 24px;
+        display: flex;
+        flex-direction: column;
+        gap: 20px;
+      }
+      
+      /* Form Styling */
+      .form-group { display: flex; flex-direction: column; gap: 8px; }
+      label {
+        font-family: 'JetBrains Mono', monospace;
+        font-size: 11px;
+        color: var(--text-secondary);
+        text-transform: uppercase;
+        letter-spacing: 0.5px;
       }
       
       input, select, textarea {
-        width: 100%;
-        background: var(--bg);
-        border: 1px solid var(--border);
-        color: var(--text-main);
-        padding: 10px;
+        background: rgba(0,0,0,0.3);
+        border: 1px solid var(--border-dim);
+        border-radius: 4px;
+        padding: 10px 12px;
+        color: #fff;
         font-family: 'Inter', sans-serif;
         font-size: 14px;
         outline: none;
+        transition: border 0.2s;
       }
-      textarea { font-family: 'VT323', monospace; font-size: 18px; resize: vertical; min-height: 100px; }
-      
+      textarea {
+        font-family: 'JetBrains Mono', monospace;
+        font-size: 13px;
+        min-height: 100px;
+        resize: vertical;
+      }
       input:focus, select:focus, textarea:focus {
-        border-color: var(--text-main);
+        border-color: var(--accent-blue);
+        background: rgba(0,0,0,0.5);
       }
 
-      /* Color Picker Grid */
-      .color-grid {
-        display: grid;
-        grid-template-columns: repeat(6, 1fr);
-        gap: 8px;
+      /* Color Palette (LED Style) */
+      .palette {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 10px;
       }
-      .color-swatch {
-        height: 30px;
+      .swatch {
+        width: 32px;
+        height: 32px;
+        border-radius: 4px;
         cursor: pointer;
-        border: 2px solid transparent;
         background: linear-gradient(135deg, var(--s1), var(--s2));
+        border: 2px solid transparent;
+        transition: transform 0.2s;
+        box-shadow: 0 2px 5px rgba(0,0,0,0.3);
       }
-      .color-swatch:hover { transform: scale(1.1); }
-      .color-swatch.selected { border-color: #fff; box-shadow: 0 0 0 2px #000; }
+      .swatch:hover { transform: scale(1.1); }
+      .swatch.active { border-color: #fff; box-shadow: 0 0 10px var(--s1); }
 
-      /* --- LOGIC VISIBILITY --- */
-      /* Ocultar elementos de admin por defecto */
+      /* --- UTILS --- */
       .admin-only { display: none !important; }
-      
-      /* Mostrar solo si el body tiene clase admin-mode */
+      /* Logic to show admin elements only when body has class */
       body.admin-mode .admin-only { display: flex !important; }
-      
-      /* FAB Button */
+
       .fab {
         position: fixed;
-        bottom: 40px;
-        right: 40px;
-        width: 56px;
-        height: 56px;
-        background: var(--text-main);
-        color: var(--bg);
+        bottom: 30px;
+        right: 30px;
+        width: 50px;
+        height: 50px;
+        border-radius: 50%;
+        background: var(--accent-blue);
+        color: #fff;
         border: none;
-        box-shadow: 4px 4px 0 rgba(0,0,0,0.5);
+        box-shadow: 0 4px 20px rgba(59, 130, 246, 0.4);
         font-size: 24px;
         cursor: pointer;
         display: grid;
         place-items: center;
-        transition: transform 0.1s;
+        transition: transform 0.2s;
+        z-index: 50;
       }
-      .fab:hover { transform: translate(-2px, -2px); box-shadow: 6px 6px 0 rgba(0,0,0,0.7); }
-      
-      /* Viewer Tag for Read-only */
-      .viewer-indicator {
-        position: fixed;
-        bottom: 20px;
-        right: 20px;
-        font-family: 'VT323';
-        color: var(--text-muted);
-        opacity: 0.5;
-      }
+      .fab:hover { transform: scale(1.1) rotate(90deg); }
 
     </style>
   </head>
   <body>
     
-    <canvas id="confettiCanvas" style="position:fixed;inset:0;pointer-events:none;z-index:99;"></canvas>
-
     <div class="container">
       <header>
         <div class="brand">
-          <h1>Z-TASK_MNML</h1>
-          <span>v2.4 // SYSTEM READY</span>
+          <h1>Z-Tasks <span style="font-weight:400; opacity:0.5;">// SYS</span></h1>
+          <div class="status">CONNECTED :: V.3.0</div>
         </div>
-        <div class="nav">
-          <a href="/admin/task.html" class="btn" id="loginBtn">Admin Access</a>
-          <a href="/task.html" class="btn admin-only" style="margin-left:10px;">Viewer Mode</a>
+        
+        <div style="display:flex; gap:10px;">
+           <a href="/admin/task.html" class="btn" id="loginBtn">ADMIN LOGIN</a>
+           <a href="/task.html" class="btn admin-only" style="opacity:0.6;">VIEWER MODE</a>
         </div>
       </header>
 
@@ -412,357 +537,332 @@
         </div>
     </div>
 
-    <button class="fab admin-only" id="addTaskBtn">+</button>
+    <button class="fab admin-only" id="addTaskBtn">
+      <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><line x1="12" y1="5" x2="12" y2="19"></line><line x1="5" y1="12" x2="19" y2="12"></line></svg>
+    </button>
 
     <div class="modal" id="modal">
-      <div class="modal-box">
-        <h2 style="margin-top:0; font-family:'Press Start 2P'; font-size:16px;">EDIT TASK DATA</h2>
-        
-        <div class="form-group">
-          <label>Title</label>
-          <input type="text" id="inpTitle" placeholder="Task identifier...">
+      <div class="modal-panel">
+        <div class="modal-header">
+          <h3>TASK PARAMETERS</h3>
+          <button id="closeModal" style="background:none; border:none; color:#666; cursor:pointer;">✕</button>
         </div>
-        
-        <div class="form-row">
-          <div>
-            <label>Mode</label>
-            <select id="inpMode">
-              <option value="manual">Manual %</option>
-              <option value="time">Time Auto</option>
-            </select>
+        <div class="modal-body">
+          <div class="form-group">
+            <label>Operation Title</label>
+            <input type="text" id="inpTitle" placeholder="Enter task name...">
           </div>
-          <div id="grpManual">
-            <label>Progress (<span id="lblPercent">0%</span>)</label>
-            <input type="range" id="inpPercent" min="0" max="100" step="5">
+          
+          <div style="display:grid; grid-template-columns: 1fr 1fr; gap:15px;">
+            <div class="form-group">
+              <label>Tracking Mode</label>
+              <select id="inpMode">
+                <option value="manual">Manual Input</option>
+                <option value="time">Auto Timer</option>
+              </select>
+            </div>
+            
+            <div class="form-group" id="grpManual">
+              <label>Completion (<span id="lblPct">0%</span>)</label>
+              <input type="range" id="inpPct" min="0" max="100">
+            </div>
           </div>
-        </div>
 
-        <div class="form-row" id="grpTime" style="display:none;">
-          <div><label>Start</label><input type="datetime-local" id="inpStart"></div>
-          <div><label>End</label><input type="datetime-local" id="inpEnd"></div>
-        </div>
+          <div class="form-group" id="grpTime" style="display:none;">
+            <div style="display:grid; grid-template-columns: 1fr 1fr; gap:15px;">
+              <div><label>Start</label><input type="datetime-local" id="inpStart"></div>
+              <div><label>End</label><input type="datetime-local" id="inpEnd"></div>
+            </div>
+          </div>
 
-        <div class="form-group">
-          <label>Description</label>
-          <textarea id="inpDesc" placeholder="Line 1&#10;Line 2 (Will be preserved)"></textarea>
-        </div>
+          <div class="form-group">
+            <label>System Logs / Description</label>
+            <textarea id="inpDesc" placeholder="- Step 1&#10;- Step 2"></textarea>
+          </div>
 
-        <div class="form-group">
-          <label>Color Identifier</label>
-          <div class="color-grid" id="colorGrid"></div>
-          <input type="hidden" id="inpC1">
-          <input type="hidden" id="inpC2">
-        </div>
+          <div class="form-group">
+            <label>Color Tag</label>
+            <div class="palette" id="palette"></div>
+          </div>
 
-        <div style="display:flex; justify-content:space-between; margin-top:20px;">
-          <button class="btn danger" id="btnDelete">DELETE</button>
-          <div>
-            <button class="btn" id="btnCancel" style="margin-right:10px;">CANCEL</button>
-            <button class="btn primary" id="btnSave">SAVE</button>
+          <div style="display:flex; justify-content:space-between; margin-top:10px;">
+            <button class="btn danger" id="btnDelete">DELETE</button>
+            <div style="display:flex; gap:10px;">
+              <button class="btn" id="btnCancel">CANCEL</button>
+              <button class="btn primary" id="btnSave">SAVE CHANGES</button>
+            </div>
           </div>
         </div>
       </div>
     </div>
 
+    <input type="hidden" id="inpC1"><input type="hidden" id="inpC2">
+
     <script>
-      // --- CONFIGURATION ---
-      // Detect if we are in the admin path
-      const ADMIN_MODE = window.location.pathname.startsWith("/admin");
+      // --- CONFIG ---
+      // Strict check: Editing only allowed if URL starts with /admin
+      const IS_ADMIN = window.location.pathname.startsWith("/admin");
       
-      if (ADMIN_MODE) {
+      if (IS_ADMIN) {
         document.body.classList.add("admin-mode");
-        document.getElementById('loginBtn').style.display = 'none'; // Hide login btn if already in admin
-      } else {
-        // We are in viewer mode
-        document.body.innerHTML += '<div class="viewer-indicator">READ ONLY MODE</div>';
+        const loginBtn = document.getElementById("loginBtn");
+        if(loginBtn) loginBtn.style.display = 'none'; // Hide login if already admin
       }
 
-      // --- STATE ---
-      let tasks = [];
-      let editingId = null;
-      let serverVersion = 0;
-      
-      // --- PRESETS ---
-      const COLORS = [
-        ['#ef4444', '#f87171'], // Red
-        ['#f97316', '#fb923c'], // Orange
-        ['#eab308', '#facc15'], // Yellow
-        ['#10b981', '#34d399'], // Emerald
-        ['#06b6d4', '#22d3ee'], // Cyan
+      // --- COLOR PRESETS (Professional Gradients) ---
+      const THEMES = [
         ['#3b82f6', '#60a5fa'], // Blue
-        ['#8b5cf6', '#a78bfa'], // Violet
-        ['#d946ef', '#e879f9'], // Fuchsia
-        ['#ffffff', '#a1a1aa'], // Monochrome
-        ['#14b8a6', '#06b6d4'], // Teal
-        ['#f43f5e', '#fb7185'], // Rose
-        ['#84cc16', '#a3e635']  // Lime
+        ['#8b5cf6', '#a78bfa'], // Purple
+        ['#10b981', '#34d399'], // Emerald
+        ['#f59e0b', '#fbbf24'], // Amber
+        ['#ef4444', '#f87171'], // Red
+        ['#ec4899', '#f472b6'], // Pink
+        ['#06b6d4', '#22d3ee'], // Cyan
+        ['#64748b', '#94a3b8']  // Slate
       ];
 
-      // --- DOM ELEMENTS ---
+      // --- STATE & DOM ---
+      let tasks = [];
+      let editingId = null;
+
       const els = {
         grid: document.getElementById('taskGrid'),
         modal: document.getElementById('modal'),
         // Inputs
         title: document.getElementById('inpTitle'),
         mode: document.getElementById('inpMode'),
-        percent: document.getElementById('inpPercent'),
-        lblPercent: document.getElementById('lblPercent'),
+        pct: document.getElementById('inpPct'),
+        lblPct: document.getElementById('lblPct'),
         start: document.getElementById('inpStart'),
         end: document.getElementById('inpEnd'),
         desc: document.getElementById('inpDesc'),
         c1: document.getElementById('inpC1'),
         c2: document.getElementById('inpC2'),
-        // Groups
+        palette: document.getElementById('palette'),
         grpManual: document.getElementById('grpManual'),
-        grpTime: document.getElementById('grpTime'),
-        colorGrid: document.getElementById('colorGrid'),
-        // Buttons
-        btnSave: document.getElementById('btnSave'),
-        btnCancel: document.getElementById('btnCancel'),
-        btnDelete: document.getElementById('btnDelete'),
-        btnAdd: document.getElementById('addTaskBtn')
+        grpTime: document.getElementById('grpTime')
       };
 
-      // --- INITIALIZATION ---
+      // --- INITIALIZE UI ---
       
-      // Build Color Picker
-      COLORS.forEach(([c1, c2]) => {
-        const div = document.createElement('div');
-        div.className = 'color-swatch';
-        div.style.setProperty('--s1', c1);
-        div.style.setProperty('--s2', c2);
-        div.onclick = () => selectColor(c1, c2, div);
-        els.colorGrid.appendChild(div);
+      // Build Palette
+      THEMES.forEach(([c1, c2]) => {
+        const d = document.createElement('div');
+        d.className = 'swatch';
+        d.style.setProperty('--s1', c1);
+        d.style.setProperty('--s2', c2);
+        d.onclick = () => {
+          els.c1.value = c1; els.c2.value = c2;
+          document.querySelectorAll('.swatch').forEach(s => s.classList.remove('active'));
+          d.classList.add('active');
+        };
+        els.palette.appendChild(d);
       });
 
-      function selectColor(c1, c2, el) {
-        els.c1.value = c1;
-        els.c2.value = c2;
-        document.querySelectorAll('.color-swatch').forEach(d => d.classList.remove('selected'));
-        if(el) el.classList.add('selected');
-        else {
-          // Find matching visual element
-          // (Simpler implementation for now)
-        }
-      }
-
-      // --- HELPERS ---
-      const computePct = (t) => {
-        if(t.mode !== 'time') return parseInt(t.percent || 0);
-        if(!t.start || !t.end) return 0;
-        const s = new Date(t.start).getTime();
-        const e = new Date(t.end).getTime();
-        const n = Date.now();
-        if(e <= s) return 100;
-        const p = ((n-s)/(e-s))*100;
-        return Math.max(0, Math.min(100, p));
-      };
-
-      const escapeHtml = (str) => {
-        if(!str) return "";
-        return str.replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;");
-      };
-
-      const formatTimeLeft = (t) => {
-        if(t.mode !== 'time') return "";
-        const now = Date.now();
-        const e = new Date(t.end).getTime();
-        if(now >= e) return "COMPLETED";
-        const diff = (e - now) / 1000; // seconds
-        const d = Math.floor(diff / 86400);
-        const h = Math.floor((diff % 86400) / 3600);
-        return `${d}d ${h}h REMAINING`;
-      };
-
-      // --- RENDER ---
+      // --- RENDER LOGIC ---
       function render() {
-        if(tasks.length === 0) {
-          els.grid.innerHTML = `<div style="grid-column:1/-1; text-align:center; padding:50px; border:2px dashed var(--border); color:var(--text-muted); font-family:'VT323'; font-size:24px;">NO ACTIVE TASKS</div>`;
+        if(!tasks.length) {
+          els.grid.innerHTML = `
+            <div style="grid-column:1/-1; text-align:center; padding:60px; color:var(--text-secondary); opacity:0.5;">
+              <div style="font-family:'Rajdhani'; font-size:20px; font-weight:600;">NO TASKS INITIALIZED</div>
+              <div style="font-size:12px; margin-top:5px;">System awaiting input...</div>
+            </div>`;
           return;
         }
 
         els.grid.innerHTML = tasks.map(t => {
-          const pct = Math.round(computePct(t));
-          const isDone = pct >= 100;
-          const isFocused = t.focused;
+          const pct = getPct(t);
+          const done = pct >= 100;
+          const focused = !!t.focused;
           
-          let badges = [];
-          if(isFocused) badges.push('<span class="badge priority">PRIORITY</span>');
-          if(isDone) badges.push('<span class="badge done">DONE</span>');
-          if(t.mode === 'time') badges.push('<span class="badge">AUTO</span>');
-          
+          // Badge Logic
+          let statusBadge = "";
+          if (focused) statusBadge = `<span class="status-badge priority-badge">
+            <svg width="12" height="12" viewBox="0 0 24 24" fill="currentColor"><path d="M12 2l3 7h7l-5 5 2 7-7-5-7 5 2-7-5-5h7z"/></svg>
+            PRIORITY
+          </span>`;
+          else if (done) statusBadge = `<span class="status-badge" style="color:var(--accent-success); border-color:var(--accent-success);">COMPLETE</span>`;
+          else if (t.mode === 'time') statusBadge = `<span class="status-badge">AUTO-TRACK</span>`;
+
           return `
-          <div class="card ${isFocused ? 'focused' : ''}" data-id="${t.id}" style="--c1:${t.c1}; --c2:${t.c2}">
-            <div class="card-strip"></div>
-            <div class="card-inner">
+          <div class="card ${focused ? 'focused' : ''}" data-id="${t.id}" style="--c1:${t.c1}; --c2:${t.c2}">
+            <div class="card-accent-strip"></div>
+            
+            <div class="card-body">
               <div class="card-header">
-                <h3 class="card-title">${escapeHtml(t.title)}</h3>
-                <div style="display:flex; gap:5px;">${badges.join('')}</div>
+                <h3 class="card-title">${esc(t.title)}</h3>
+                ${statusBadge}
               </div>
-              
-              ${t.desc ? `<div class="card-desc">${escapeHtml(t.desc)}</div>` : ''}
-              
-              <div class="progress-wrap">
-                <div class="progress-bar">
+
+              ${t.desc ? `<div class="card-desc">${esc(t.desc)}</div>` : ''}
+
+              <div class="progress-section">
+                <div class="progress-labels">
+                  <span>PROGRESS</span>
+                  <span>${pct}%</span>
+                </div>
+                <div class="progress-track">
                   <div class="progress-fill" style="--w:${pct}%"></div>
                 </div>
-                <div class="progress-meta">
-                  <span>${pct}% COMPLETE</span>
-                  <span>${formatTimeLeft(t)}</span>
+                <div style="font-size:11px; color:var(--text-secondary); margin-top:6px; font-family:'JetBrains Mono'; text-align:right;">
+                  ${t.mode==='time' ? getTimeText(t) : 'MANUAL OVERRIDE'}
                 </div>
               </div>
 
-              <div class="actions admin-only">
-                <button class="icon-btn focus-toggle ${isFocused?'active':''}" onclick="toggleFocus('${t.id}', event)" title="Toggle Priority">
-                  <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                    <path d="M12 2l3 7h7l-5 5 2 7-7-5-7 5 2-7-5-5h7z"/> </svg>
+              <div class="card-footer admin-only">
+                <button class="icon-btn priority-toggle ${focused?'active':''}" onclick="action('${t.id}', 'focus')" title="Toggle Priority">
+                  <svg viewBox="0 0 24 24" stroke-linecap="round" stroke-linejoin="round"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"></polygon></svg>
                 </button>
-                <button class="icon-btn" onclick="openEdit('${t.id}', event)" title="Edit">
-                  <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                    <path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"></path>
-                    <path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"></path>
-                  </svg>
-                </button>
+                <div style="flex:1"></div>
+                <button class="icon-btn" onclick="action('${t.id}', 'edit')" title="Edit"><svg viewBox="0 0 24 24"><path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"></path><path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"></path></svg></button>
               </div>
             </div>
-          </div>
-          `;
+          </div>`;
         }).join('');
       }
 
-      // --- ACTIONS (Only work if ADMIN_MODE is true logically, though hidden by CSS) ---
+      // --- HELPERS ---
+      const esc = t => (t||"").replace(/&/g, "&amp;").replace(/</g, "&lt;");
+      const getPct = t => {
+        if(t.mode !== 'time') return Math.round(t.percent||0);
+        const now = Date.now(), s = new Date(t.start).getTime(), e = new Date(t.end).getTime();
+        if(!s || !e) return 0;
+        if(now >= e) return 100;
+        return Math.max(0, Math.min(100, Math.round(((now-s)/(e-s))*100)));
+      };
+      const getTimeText = t => {
+        const now = Date.now(), e = new Date(t.end).getTime();
+        if(now >= e) return "FINISHED";
+        const h = Math.floor((e-now)/3600000);
+        const m = Math.floor(((e-now)%3600000)/60000);
+        return `T-MINUS ${h}h ${m}m`;
+      };
 
-      window.toggleFocus = (id, e) => {
-        e.stopPropagation();
-        if(!ADMIN_MODE) return;
+      // --- ACTIONS (ADMIN ONLY) ---
+      window.action = (id, type) => {
+        if(!IS_ADMIN) return;
         const t = tasks.find(x => x.id === id);
-        if(t) {
+        if(!t) return;
+
+        if(type === 'focus') {
           t.focused = !t.focused;
-          saveTasks();
+          save();
           render();
+        } else if(type === 'edit') {
+          openModal(t);
         }
       };
 
-      window.openEdit = (id, e) => {
-        e && e.stopPropagation();
-        if(!ADMIN_MODE) return;
-        
-        editingId = id;
-        const t = id ? tasks.find(x => x.id === id) : null;
+      // --- MODAL LOGIC ---
+      function openModal(t = null) {
+        if(!IS_ADMIN) return;
+        editingId = t ? t.id : null;
         
         els.title.value = t ? t.title : "";
         els.desc.value = t ? t.desc : "";
         els.mode.value = t ? t.mode : "manual";
-        els.percent.value = t ? (t.percent || 0) : 0;
-        els.lblPercent.innerText = els.percent.value + "%";
+        els.pct.value = t ? (t.percent||0) : 0;
+        els.lblPct.textContent = els.pct.value + '%';
         
-        // Dates
         const dateStr = d => d ? new Date(d).toISOString().slice(0,16) : "";
         els.start.value = t ? dateStr(t.start) : "";
         els.end.value = t ? dateStr(t.end) : "";
         
-        // Color
-        const c1 = t ? t.c1 : COLORS[0][0];
-        const c2 = t ? t.c2 : COLORS[0][1];
-        selectColor(c1, c2, null);
+        const c1 = t ? t.c1 : THEMES[0][0];
+        const c2 = t ? t.c2 : THEMES[0][1];
+        els.c1.value = c1; els.c2.value = c2;
         
-        updateFormVisibility();
-        els.modal.classList.add('show');
-      };
+        // Highlight color
+        document.querySelectorAll('.swatch').forEach(s => {
+          s.classList.remove('active');
+          if(s.style.getPropertyValue('--s1') === c1) s.classList.add('active');
+        });
 
-      function saveTasks() {
-        if(!ADMIN_MODE) return;
-        fetch('/api/save', {
-          method: 'POST',
-          headers: {'Content-Type': 'application/json'},
-          body: JSON.stringify({tasks})
-        }).catch(err => console.error(err));
+        updateForm();
+        els.modal.classList.add('show');
       }
 
-      // --- EVENT LISTENERS ---
+      function updateForm() {
+        const isTime = els.mode.value === 'time';
+        els.grpManual.style.display = isTime ? 'none' : 'flex';
+        els.grpTime.style.display = isTime ? 'block' : 'none';
+      }
 
-      if (ADMIN_MODE) {
-        els.btnAdd.addEventListener('click', () => openEdit(null));
+      // Events
+      if(IS_ADMIN) {
+        document.getElementById('addTaskBtn').onclick = () => openModal();
+        document.getElementById('btnCancel').onclick = () => els.modal.classList.remove('show');
+        document.getElementById('closeModal').onclick = () => els.modal.classList.remove('show');
         
-        els.btnSave.addEventListener('click', () => {
-          const title = els.title.value.trim();
-          if(!title) return alert("Title required");
-          
+        els.mode.onchange = updateForm;
+        els.pct.oninput = e => els.lblPct.textContent = e.target.value + '%';
+        
+        document.getElementById('btnSave').onclick = () => {
+          if(!els.title.value.trim()) return alert("TITLE REQUIRED");
           const mode = els.mode.value;
-          const newTask = {
-            id: editingId || Math.random().toString(36).substr(2, 9),
-            title,
+          
+          const task = {
+            id: editingId || Math.random().toString(36).slice(2),
+            title: els.title.value,
             desc: els.desc.value,
             mode,
-            percent: mode === 'manual' ? parseInt(els.percent.value) : 0,
-            start: mode === 'time' && els.start.value ? new Date(els.start.value).toISOString() : null,
-            end: mode === 'time' && els.end.value ? new Date(els.end.value).toISOString() : null,
+            percent: mode==='manual' ? parseInt(els.pct.value) : 0,
+            start: mode==='time' && els.start.value ? new Date(els.start.value).toISOString() : null,
+            end: mode==='time' && els.end.value ? new Date(els.end.value).toISOString() : null,
             c1: els.c1.value,
             c2: els.c2.value,
-            focused: editingId ? (tasks.find(t => t.id === editingId)?.focused || false) : false
+            focused: editingId ? (tasks.find(x=>x.id===editingId)?.focused||false) : false
           };
-
+          
           if(editingId) {
-            const idx = tasks.findIndex(t => t.id === editingId);
-            if(idx > -1) tasks[idx] = newTask;
-          } else {
-            tasks.unshift(newTask);
-          }
-
+            const idx = tasks.findIndex(x=>x.id===editingId);
+            if(idx>=0) tasks[idx] = task;
+          } else tasks.unshift(task);
+          
           els.modal.classList.remove('show');
-          saveTasks();
+          save();
           render();
-        });
+        };
 
-        els.btnDelete.addEventListener('click', () => {
-          if(editingId && confirm("Delete task?")) {
-            tasks = tasks.filter(t => t.id !== editingId);
-            saveTasks();
-            render();
-            els.modal.classList.remove('show');
-          }
-        });
-
-        // Toggle Manual/Time inputs
-        els.mode.addEventListener('change', updateFormVisibility);
-        els.percent.addEventListener('input', (e) => els.lblPercent.innerText = e.target.value + "%");
+        document.getElementById('btnDelete').onclick = () => {
+          if(!editingId || !confirm("CONFIRM DELETION?")) return;
+          tasks = tasks.filter(x => x.id !== editingId);
+          els.modal.classList.remove('show');
+          save();
+          render();
+        };
       }
 
-      els.btnCancel.addEventListener('click', () => els.modal.classList.remove('show'));
-
-      function updateFormVisibility() {
-        const isTime = els.mode.value === 'time';
-        els.grpTime.style.display = isTime ? 'grid' : 'none';
-        els.grpManual.style.display = isTime ? 'none' : 'block';
+      // --- SERVER SYNC ---
+      async function save() {
+        if(!IS_ADMIN) return;
+        try {
+          await fetch('/api/save', { method:'POST', headers:{'Content-Type':'application/json'}, body:JSON.stringify({tasks}) });
+        } catch(e){ console.error(e); }
       }
 
-      // --- BACKEND SYNC ---
-      async function loadData() {
+      async function boot() {
         try {
           const res = await fetch('/api/tasks');
-          const data = await res.json();
-          tasks = data.tasks || [];
+          const d = await res.json();
+          tasks = d.tasks || [];
           render();
-        } catch(e) { console.log("Offline mode"); }
-      }
-
-      function connectWS() {
+        } catch {}
+        
+        // WS
         const proto = location.protocol === 'https:' ? 'wss' : 'ws';
         const ws = new WebSocket(`${proto}://${location.host}/ws`);
-        ws.onmessage = (e) => {
-          const msg = JSON.parse(e.data);
-          if(msg.type === 'set' || msg.type === 'init') {
-            tasks = msg.tasks || [];
+        ws.onmessage = e => {
+          const m = JSON.parse(e.data);
+          if(m.type==='set' || m.type==='init') {
+            tasks = m.tasks || [];
             render();
           }
         };
-        ws.onclose = () => setTimeout(connectWS, 2000);
+        
+        setInterval(render, 5000);
       }
-
-      // Boot
-      loadData();
-      connectWS();
-      setInterval(render, 5000); // Update timers periodically
+      boot();
 
     </script>
   </body>
